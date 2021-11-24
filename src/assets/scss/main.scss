@@ -1,6 +1,9 @@
 @import './variables';
 @import './fonts';
 
+* {
+  font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
+}
 html {
   overflow-x: hidden;
   overflow-y: scroll;
@@ -9,19 +12,34 @@ body {
   min-height: 100vh;
 }
 h1 {
-  font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
+  // font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
   font-size: 2.5em;
   font-weight: 500;
 }
 h2 {
-  font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
+  // font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
   font-size: 1.5em;
   font-weight: 500;
 }
 h3 {
-  font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
+  // font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
   font-size: 1.25em;
 }
 p {
-  font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
+  // font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-bottom: 2px solid $color-primary;
+    transition: all 0.15s ease;
+  }
+  &:active {
+    color: $color-primary;
+    transition: all 0.15s ease;
+  }
 }
