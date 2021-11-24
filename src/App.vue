@@ -1,47 +1,23 @@
 <template>
   <div id="app">
-    <header class="header-bar">
-      <div class="left">
-        <div class="drawer-icon"></div>
-        <div class="logo">Algetda</div>
-        <div class="curr-algorithm"></div>
-      </div>
-      <div class="right">
-        <div class="gear-icon"></div>
-        <div class="home-icon"></div>
-        <div class="github-icon"></div>
-      </div>
-    </header>
+    <HeaderBar></HeaderBar>
     <router-view />
   </div>
 </template>
 
-<style lang="scss">
-header.header-bar {
-  height: 64px;
-  padding: 16px;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: $color-grey-4;
+<script lang="ts">
+import Vue from 'vue'
+import HeaderBar from '@/components/HeaderBar.vue'
 
-  .left,
-  .right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-}
-.logo {
-  font-size: 1.5em;
-}
-.drawer-icon,
-.gear-icon,
-.home-icon,
-.github-icon {
-  width: 32px;
-  height: 32px;
-  background-color: $color-grey-3;
+export default Vue.extend({
+  components: {
+    HeaderBar,
+  },
+})
+</script>
+
+<style lang="scss">
+* {
+  font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
 }
 </style>
