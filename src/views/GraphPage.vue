@@ -1,8 +1,5 @@
 <template>
-  <div class="main-container">
-    <h1>Main Page</h1>
-    <router-view></router-view>
-  </div>
+  <div>Graph</div>
 </template>
 
 <script lang="ts">

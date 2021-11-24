@@ -26,28 +26,25 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      menuItems: [
-        {
-          name: 'Linked list - 연결 리스트',
-          path: '#',
-        },
-        {
-          name: 'Tree - 트리',
-          path: '#',
-        },
-        {
-          name: 'Graph - 그래프',
-          path: '#',
-        },
-        {
-          name: 'Heap - 힙',
-          path: '#',
-        },
-        {
-          name: 'Etc. - 기타',
-          path: '#',
-        },
-      ],
+      menuItems: [] as {
+        name?: string
+        path: string
+      }[],
+    }
+  },
+  mounted() {
+    const routes = this.$router.options.routes
+    if (routes) {
+      this.menuItems.push({
+        name: routes[0].name,
+        path: routes[0].path,
+      })
+      routes[1].children?.forEach(child => {
+        this.menuItems.push({
+          name: child.name,
+          path: child.path,
+        })
+      })
     }
   },
   methods: {
