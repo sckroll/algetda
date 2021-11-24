@@ -7,8 +7,8 @@
     </div>
     <div class="right">
       <div class="gear-icon"></div>
-      <div class="home-icon"></div>
-      <div class="github-icon"></div>
+      <a href="http://sckroll.github.io" class="home-icon"></a>
+      <a href="https://github.com/sckroll/algetda" class="github-icon"></a>
     </div>
   </header>
 </template>
@@ -54,5 +54,10 @@ header.header-bar {
   width: 32px;
   height: 32px;
   background-color: $color-grey-3;
+  border-bottom: none;
+
+  &:hover {
+    border-bottom: none;
+  }
 }
 </style>
