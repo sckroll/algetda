@@ -31,6 +31,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 header.header-bar {
+  z-index: 5;
   height: 64px;
   padding: 16px;
   box-sizing: border-box;
