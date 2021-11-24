@@ -7,7 +7,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home - 홈',
-    component: () => import('@/views/IndexPage.vue'),
+    component: () => import('@/views/HomePage.vue'),
   },
   {
     path: '/',
