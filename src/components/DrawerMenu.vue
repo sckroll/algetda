@@ -1,21 +1,23 @@
 <template>
-  <section class="drawer-container">
-    <div class="upper">
-      <div class="close-icon"></div>
-      <nav>
-        <ul>
-          <li v-for="(item, index) in menuItems" :key="index">
-            <router-link :to="item.path">{{ item.name }}</router-link>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="lower">
-      <div class="author">
-        Created by <a href="http://sckroll.github.io">Sckroll</a>
+  <div class="overlay" @click.self="closeDrawer">
+    <section class="drawer-container">
+      <div class="upper">
+        <div class="close-icon" @click="closeDrawer"></div>
+        <nav>
+          <ul>
+            <li v-for="(item, index) in menuItems" :key="index">
+              <router-link :to="item.path">{{ item.name }}</router-link>
+            </li>
+          </ul>
+        </nav>
       </div>
-    </div>
-  </section>
+      <div class="lower">
+        <div class="author">
+          Created by <a href="http://sckroll.github.io">Sckroll</a>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -48,12 +50,24 @@ export default Vue.extend({
       ],
     }
   },
+  methods: {
+    closeDrawer() {
+      this.$store.commit('CLOSE_DRAWER')
+    },
+  },
 })
 </script>
 
 <style lang="scss" scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 section.drawer-container {
-  width: 400px;
+  width: 384px;
   height: 100%;
   position: fixed;
   top: 0;
@@ -72,6 +86,7 @@ section.drawer-container {
   }
 }
 .close-icon {
+  cursor: pointer;
   width: 32px;
   height: 32px;
   background-color: $color-grey-3;

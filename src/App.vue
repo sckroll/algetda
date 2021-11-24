@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <HeaderBar></HeaderBar>
-    <DrawerMenu></DrawerMenu>
     <router-view />
+    <transition name="fade-drawer">
+      <DrawerMenu v-if="drawer"></DrawerMenu>
+    </transition>
   </div>
 </template>
 
@@ -15,6 +17,11 @@ export default Vue.extend({
   components: {
     HeaderBar,
     DrawerMenu,
+  },
+  computed: {
+    drawer(): boolean {
+      return this.$store.state.drawer
+    },
   },
 })
 </script>

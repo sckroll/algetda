@@ -1,7 +1,7 @@
 <template>
   <header class="header-bar">
     <div class="left">
-      <div class="drawer-icon"></div>
+      <div class="drawer-icon" @click="openDrawer"></div>
       <Logo></Logo>
       <div class="curr-algorithm"></div>
     </div>
@@ -20,6 +20,11 @@ import Logo from '@/components/Logo.vue'
 export default Vue.extend({
   components: {
     Logo,
+  },
+  methods: {
+    openDrawer() {
+      this.$store.commit('OPEN_DRAWER')
+    },
   },
 })
 </script>
@@ -45,6 +50,7 @@ header.header-bar {
 .gear-icon,
 .home-icon,
 .github-icon {
+  cursor: pointer;
   width: 32px;
   height: 32px;
   background-color: $color-grey-3;
