@@ -22,7 +22,11 @@ export default Vue.extend({})
 </script>
 
 <style lang="scss" scoped>
+section {
+  margin: 64px 0;
+}
 .description {
-  margin-top: 16px;
+  margin-top: 32px;
+  font-size: 1.1em;
 }
 </style>
