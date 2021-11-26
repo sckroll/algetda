@@ -36,6 +36,10 @@ a {
     color: $color-primary;
     transition: all 0.15s ease;
   }
+  &.router-link-active {
+    border-bottom: 2px solid $color-primary;;
+    transition: all 0.15s ease;
+  }
 }
 
 .fade-enter-active,
