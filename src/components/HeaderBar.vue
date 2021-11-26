@@ -6,7 +6,7 @@
       <div class="curr-algorithm"></div>
     </div>
     <div class="right">
-      <div class="gear-icon"></div>
+      <div class="gear-icon" @click="openSettingsPopup"></div>
       <a href="http://sckroll.github.io" class="home-icon"></a>
       <a href="https://github.com/sckroll/algetda" class="github-icon"></a>
     </div>
@@ -25,13 +25,18 @@ export default Vue.extend({
     openDrawer() {
       this.$store.commit('OPEN_DRAWER')
     },
+    openSettingsPopup() {
+      this.$store.commit('OPEN_SETTINGS_POPUP')
+    },
   },
 })
 </script>
 
 <style lang="scss" scoped>
 header.header-bar {
-  z-index: 5;
+  z-index: 10;
+  position: fixed;
+  width: 100%;
   height: 64px;
   padding: 16px;
   box-sizing: border-box;
