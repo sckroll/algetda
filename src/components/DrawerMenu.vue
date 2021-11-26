@@ -13,7 +13,8 @@
       </div>
       <div class="lower">
         <div class="author">
-          Created by <a href="http://sckroll.github.io">Sckroll</a>
+          Created by
+          <a href="http://sckroll.github.io" class="underline">Sckroll</a>
         </div>
       </div>
     </section>

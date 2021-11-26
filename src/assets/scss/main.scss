@@ -46,6 +46,18 @@ a {
     border-bottom: 2px solid $color-primary;;
     transition: all 0.15s ease;
   }
+  &.underline {
+    border-bottom: 2px solid $color-grey-3;
+
+    &:hover {
+      border-bottom: 2px solid $color-primary;
+      transition: all 0.15s ease;
+    }
+    &:active {
+      color: $color-primary;
+      transition: all 0.15s ease;
+    }
+  }
 }
 
 .fade-enter-active,

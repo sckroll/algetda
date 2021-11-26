@@ -8,8 +8,8 @@
       </p>
       <p>
         순수 공부 목적으로 구현한 사이드 프로젝트이며,
-        <a href="https://visualgo.net">VisuAlgo</a>에서 영감을 받아
-        만들었습니다.
+        <a href="https://visualgo.net" class="underline">VisuAlgo</a>에서 영감을
+        받아 만들었습니다.
       </p>
     </div>
   </section>
