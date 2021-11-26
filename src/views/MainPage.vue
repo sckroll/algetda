@@ -1,14 +1,24 @@
 <template>
-  <div class="main-container">
+  <main class="main-container">
+    <ControlArea></ControlArea>
     <h1>Main Page</h1>
     <router-view></router-view>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import ControlArea from '@/components/ControlArea.vue'
 
-export default Vue.extend({})
+export default Vue.extend({
+  components: {
+    ControlArea,
+  },
+})
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+main.main-container {
+  padding-top: 64px;
+}
+</style>
