@@ -76,8 +76,8 @@ section.drawer-container {
   justify-content: space-between;
   padding: 16px;
   box-sizing: border-box;
-  background-color: rgba($color-grey-4, 0.7);
-  backdrop-filter: blur(8px);
+  background-color: $color-grey-4;
+  box-shadow: 0 0 4px 2px rgba(black, 0.3);
 
   .upper {
     display: flex;
