@@ -43,7 +43,9 @@ header.header-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: $color-grey-4;
+  background-color: rgba($color-grey-4, 0.7);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 4px 2px rgba(black, 0.3);
 
   .left,
   .right {
