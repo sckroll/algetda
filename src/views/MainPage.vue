@@ -1,8 +1,9 @@
 <template>
   <main class="main-container">
     <ControlArea></ControlArea>
-    <h1>Main Page</h1>
-    <router-view></router-view>
+    <section class="visual-area">
+      <router-view></router-view>
+    </section>
   </main>
 </template>
 
@@ -20,5 +21,14 @@ export default Vue.extend({
 <style lang="scss">
 main.main-container {
   padding-top: 64px;
+}
+section.visual-area {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

@@ -10,11 +10,16 @@ export default Vue.extend({})
 
 <style lang="scss" scoped>
 section {
-  height: 64px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 128px;
   display: flex;
   gap: 16px;
   padding: 16px;
   box-sizing: border-box;
-  background-color: $color-grey-4;
+  background-color: rgba($color-grey-4, 0.7);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 4px 2px rgba(black, 0.3);
 }
 </style>
