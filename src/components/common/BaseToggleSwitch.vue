@@ -36,9 +36,9 @@ export default Vue.extend({
   cursor: pointer;
   width: 48px;
   height: 24px;
-  padding: 2px;
+  padding: 3px;
   box-sizing: border-box;
-  border: 2px solid $color-grey-1;
+  border: 3px solid $color-grey-1;
   border-radius: 24px;
   display: flex;
   align-items: center;
@@ -46,20 +46,20 @@ export default Vue.extend({
   transition: all 0.15s ease;
 
   &.toggled {
-    border: 2px solid $color-secondary;
+    border: 3px solid $color-secondary;
     background-color: $color-primary;
     transition: all 0.15s ease;
   }
   &.disabled {
     cursor: default;
-    border: 2px solid $color-grey-3;
+    border: 3px solid $color-grey-3;
     background-color: $color-grey-4;
   }
 }
 .knob {
-  width: 16px;
-  height: 16px;
-  border-radius: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 7px;
   background-color: $color-secondary;
   transition: all 0.15s ease;
 
