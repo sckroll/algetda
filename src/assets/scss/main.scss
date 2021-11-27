@@ -3,6 +3,10 @@
 
 * {
   font-family: 'Poppins', 'Spoqa Han Sans Neo', sans-serif;
+
+  &::selection {
+    background-color: $color-primary;
+  }
 }
 html {
   overflow-x: hidden;
