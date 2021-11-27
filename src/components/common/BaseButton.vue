@@ -37,8 +37,9 @@ button {
     border: 3px solid $color-secondary;
     transition: all 0.15s ease;
   }
-  &:active {
-    background-color: $color-primary;
+  &:focus {
+    outline: none;
+    border: 3px dashed $color-secondary;
     transition: all 0.15s ease;
   }
   &.disabled {
