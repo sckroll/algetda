@@ -1,11 +1,14 @@
 <template>
-  <div
-    class="toggle-switch"
-    :class="{ toggled: value, disabled }"
-    @click="handleToggle"
-  >
-    <div class="knob" :class="{ toggled: value, disabled }"></div>
-  </div>
+  <label class="toggle-container">
+    <div
+      class="toggle-switch"
+      :class="{ toggled: value, disabled }"
+      @click="handleToggle"
+    >
+      <div class="knob" :class="{ toggled: value, disabled }"></div>
+    </div>
+    <slot></slot>
+  </label>
 </template>
 
 <script lang="ts">
@@ -32,6 +35,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
 .toggle-switch {
   cursor: pointer;
   width: 48px;
