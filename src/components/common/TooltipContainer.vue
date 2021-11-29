@@ -1,14 +1,16 @@
 <template>
-  <div class="tooltip-container">
+  <div class="tooltip-container" :class="{ [horizontal]: horizontal }">
     <BaseTooltip
       v-if="vertical === 'down'"
       v-model="tooltip"
       :vertical="vertical"
       :horizontal="horizontal"
       :element-width="elementWidth"
+      :element-height="elementHeight"
     >
       <slot name="content"></slot>
     </BaseTooltip>
+
     <div
       class="tooltip-target"
       @mouseover="showTooltip"
@@ -17,12 +19,14 @@
     >
       <slot name="element"></slot>
     </div>
+
     <BaseTooltip
       v-if="vertical === 'up'"
       v-model="tooltip"
       :vertical="vertical"
       :horizontal="horizontal"
       :element-width="elementWidth"
+      :element-height="elementHeight"
     >
       <slot name="content"></slot>
     </BaseTooltip>
@@ -58,6 +62,7 @@ export default Vue.extend({
     return {
       tooltip: false,
       elementWidth: 0,
+      elementHeight: 0,
     }
   },
   computed: {
@@ -70,6 +75,7 @@ export default Vue.extend({
   },
   mounted() {
     this.elementWidth = (this.$refs.tooltip as HTMLDivElement).clientWidth
+    this.elementHeight = (this.$refs.tooltip as HTMLDivElement).clientHeight
   },
   methods: {
     showTooltip() {
@@ -84,6 +90,16 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .tooltip-container {
-  /* position: relative; */
+  display: flex;
+
+  &.left {
+    justify-content: flex-start;
+  }
+  &.center {
+    justify-content: center;
+  }
+  &.right {
+    justify-content: flex-end;
+  }
 }
 </style>

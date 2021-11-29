@@ -1,13 +1,13 @@
 <template>
   <div
     class="tooltip"
-    :class="{ show: value }"
-    :style="`margin-left: ${offset}px`"
+    :class="{ show: value, [horizontal]: horizontal }"
+    :style="`margin-top: ${offsetHeight}px;`"
   >
     <div
       v-if="vertical === 'up'"
       class="arrow-container"
-      :class="{ [horizontal]: horizontal }"
+      :style="`width: ${elementWidth}px`"
     >
       <div class="arrow up"></div>
     </div>
@@ -15,7 +15,7 @@
     <div
       v-if="vertical === 'down'"
       class="arrow-container"
-      :class="{ [horizontal]: horizontal }"
+      :style="`width: ${elementWidth}px`"
     >
       <div class="arrow down"></div>
     </div>
@@ -43,27 +43,36 @@ export default Vue.extend({
       type: Number,
       default: 0,
     },
+    elementHeight: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
-      tooltipWidth: 0,
+      tooltipHeight: 0,
     }
   },
   computed: {
-    offset(): number {
-      return -(this.tooltipWidth - 12 - this.elementWidth) / 2
+    offsetHeight(): number {
+      if (this.vertical === 'up') {
+        return this.elementHeight
+      } else {
+        return -this.tooltipHeight
+      }
     },
   },
   mounted() {
-    this.tooltipWidth = this.$el.clientWidth
-    console.log(this.tooltipWidth)
+    this.tooltipHeight = (this.$el as HTMLDivElement).clientHeight
   },
 })
 </script>
 
 <style lang="scss" scoped>
+$tooltip-background: rgba($color-grey-3, 0.7);
+
 .tooltip {
-  z-index: 5;
+  z-index: -1;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -71,35 +80,35 @@ export default Vue.extend({
   transition: all 0.15s ease;
 
   &.show {
+    z-index: 5;
     opacity: 1;
     transition: all 0.15s ease;
+  }
+  &.left {
+    align-items: flex-start;
+  }
+  &.center {
+    align-items: center;
+  }
+  &.right {
+    align-items: flex-end;
   }
 }
 .content {
   padding: 16px;
   box-sizing: border-box;
   font-size: 0.9em;
-  background-color: rgba($color-grey-4, 0.7);
+  background-color: $tooltip-background;
   backdrop-filter: blur(6px);
 }
 .arrow-container {
   display: flex;
-  padding: 0 32px;
-
-  &.left {
-    justify-content: flex-start;
-  }
-  &.center {
-    justify-content: center;
-  }
-  &.right {
-    justify-content: flex-end;
-  }
+  justify-content: center;
 }
 .arrow {
   width: 32px;
   height: 32px;
-  background-color: rgba($color-grey-4, 0.7);
+  background-color: $tooltip-background;
   backdrop-filter: blur(6px);
 
   &.up {
