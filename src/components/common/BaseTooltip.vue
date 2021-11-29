@@ -106,16 +106,16 @@ $tooltip-background: rgba($color-grey-3, 0.7);
   justify-content: center;
 }
 .arrow {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background-color: $tooltip-background;
   backdrop-filter: blur(6px);
 
   &.up {
-    clip-path: polygon(0% 101%, 50% 0%, 100% 101%);
+    clip-path: polygon(0% 105%, 50% 0%, 100% 105%);
   }
   &.down {
-    clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+    clip-path: polygon(0% -5%, 50% 100%, 100% -5%);
   }
 }
 </style>
