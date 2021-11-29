@@ -4,5 +4,3 @@
     stroke-width="2"
   />
 </template>
-
-<style lang="scss" scoped></style>

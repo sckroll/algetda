@@ -4,5 +4,3 @@
     <path d="M6 29V16H26V29H6Z" stroke-width="2" />
   </g>
 </template>
-
-<style lang="scss" scoped></style>
