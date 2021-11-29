@@ -1,23 +1,25 @@
 <template>
-  <transition name="fade">
-    <div v-if="value" class="tooltip">
-      <div
-        v-if="verticalPos === 'up'"
-        class="arrow-container"
-        :class="{ [horizontalPos]: horizontalPos }"
-      >
-        <div class="arrow up"></div>
-      </div>
-      <div class="content"><slot></slot></div>
-      <div
-        v-if="verticalPos === 'down'"
-        class="arrow-container"
-        :class="{ [horizontalPos]: horizontalPos }"
-      >
-        <div class="arrow down"></div>
-      </div>
+  <div
+    class="tooltip"
+    :class="{ show: value }"
+    :style="`margin-left: ${offset}px`"
+  >
+    <div
+      v-if="vertical === 'up'"
+      class="arrow-container"
+      :class="{ [horizontal]: horizontal }"
+    >
+      <div class="arrow up"></div>
     </div>
-  </transition>
+    <div class="content"><slot></slot></div>
+    <div
+      v-if="vertical === 'down'"
+      class="arrow-container"
+      :class="{ [horizontal]: horizontal }"
+    >
+      <div class="arrow down"></div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,29 +31,32 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
-    arrow: {
+    vertical: {
       type: String,
-      default: 'down center',
-      validator: value => {
-        const vertical = ['up', 'down']
-        const horizontal = ['left', 'center', 'right']
-        const splitted = value.split(' ')
-
-        return (
-          splitted.length === 2 &&
-          vertical.includes(splitted[0]) &&
-          horizontal.includes(splitted[1])
-        )
-      },
+      default: 'up',
+    },
+    horizontal: {
+      type: String,
+      default: 'center',
+    },
+    elementWidth: {
+      type: Number,
+      default: 0,
     },
   },
+  data() {
+    return {
+      tooltipWidth: 0,
+    }
+  },
   computed: {
-    verticalPos(): string {
-      return this.arrow.split(' ')[0]
+    offset(): number {
+      return -(this.tooltipWidth - 12 - this.elementWidth) / 2
     },
-    horizontalPos(): string {
-      return this.arrow.split(' ')[1]
-    },
+  },
+  mounted() {
+    this.tooltipWidth = this.$el.clientWidth
+    console.log(this.tooltipWidth)
   },
 })
 </script>
@@ -62,6 +67,13 @@ export default Vue.extend({
   position: absolute;
   display: flex;
   flex-direction: column;
+  opacity: 0;
+  transition: all 0.15s ease;
+
+  &.show {
+    opacity: 1;
+    transition: all 0.15s ease;
+  }
 }
 .content {
   padding: 16px;
@@ -91,7 +103,7 @@ export default Vue.extend({
   backdrop-filter: blur(6px);
 
   &.up {
-    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+    clip-path: polygon(0% 101%, 50% 0%, 100% 101%);
   }
   &.down {
     clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
