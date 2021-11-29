@@ -12,6 +12,15 @@
     </BaseTooltip>
 
     <div
+      v-if="toggle"
+      class="tooltip-target toggle"
+      @click.stop="toggleTooltip"
+      ref="tooltip"
+    >
+      <slot name="element"></slot>
+    </div>
+    <div
+      v-else
       class="tooltip-target"
       @mouseover="showTooltip"
       @mouseleave="hideTooltip"
@@ -57,6 +66,10 @@ export default Vue.extend({
         )
       },
     },
+    toggle: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -77,12 +90,28 @@ export default Vue.extend({
     this.elementWidth = (this.$refs.tooltip as HTMLDivElement).clientWidth
     this.elementHeight = (this.$refs.tooltip as HTMLDivElement).clientHeight
   },
+  beforeDestroy() {
+    window.removeEventListener('click', this.toggleClickHandler)
+  },
   methods: {
     showTooltip() {
       this.tooltip = true
     },
     hideTooltip() {
       this.tooltip = false
+    },
+    toggleTooltip() {
+      this.tooltip = !this.tooltip
+      if (this.tooltip) {
+        window.addEventListener('click', this.toggleClickHandler)
+      } else {
+        window.removeEventListener('click', this.toggleClickHandler)
+      }
+    },
+    toggleClickHandler({ target }: MouseEvent) {
+      if (!(target as HTMLElement).classList.contains('click-safe')) {
+        this.toggleTooltip()
+      }
     },
   },
 })
@@ -101,5 +130,8 @@ export default Vue.extend({
   &.right {
     justify-content: flex-end;
   }
+}
+.toggle {
+  cursor: pointer;
 }
 </style>

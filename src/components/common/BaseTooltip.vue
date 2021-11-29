@@ -9,15 +9,15 @@
       class="arrow-container"
       :style="`width: ${elementWidth}px`"
     >
-      <div class="arrow up"></div>
+      <div class="arrow up click-safe"></div>
     </div>
-    <div class="content"><slot></slot></div>
+    <div class="content click-safe"><slot></slot></div>
     <div
       v-if="vertical === 'down'"
       class="arrow-container"
       :style="`width: ${elementWidth}px`"
     >
-      <div class="arrow down"></div>
+      <div class="arrow down click-safe"></div>
     </div>
   </div>
 </template>
