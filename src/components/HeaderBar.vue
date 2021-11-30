@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Logo from '@/components/Logo.vue'
+import Logo from '@/components/common/Logo.vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconDrawer from '@/components/icons/IconDrawer.vue'
 import IconSettings from '@/components/icons/IconSettings.vue'
