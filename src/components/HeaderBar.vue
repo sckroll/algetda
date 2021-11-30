@@ -1,7 +1,7 @@
 <template>
   <header class="header-bar">
     <div class="left">
-      <div class="drawer-icon" @click="openDrawer">
+      <div class="icon-container" @click="openDrawer">
         <IconBase>
           <IconDrawer></IconDrawer>
         </IconBase>
@@ -10,17 +10,17 @@
       <div class="curr-algorithm"></div>
     </div>
     <div class="right">
-      <div class="gear-icon" @click="openSettingsPopup">
+      <div class="icon-container" @click="openSettingsPopup">
         <IconBase>
           <IconSettings></IconSettings>
         </IconBase>
       </div>
-      <a href="http://sckroll.github.io" class="home-icon">
+      <a href="http://sckroll.github.io" class="icon-container">
         <IconBase>
           <IconHome></IconHome>
         </IconBase>
       </a>
-      <a href="https://github.com/sckroll/algetda" class="github-icon">
+      <a href="https://github.com/sckroll/algetda" class="icon-container">
         <IconBase viewBox="0 0 496 512" color="black">
           <IconGitHub></IconGitHub>
         </IconBase>
@@ -79,6 +79,9 @@ header.header-bar {
     align-items: center;
     gap: 16px;
   }
+}
+.icon-container {
+  height: 32px;
 }
 svg {
   cursor: pointer;
