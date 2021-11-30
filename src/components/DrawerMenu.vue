@@ -2,7 +2,13 @@
   <div class="overlay" @click.self="closeDrawer">
     <section class="drawer-container">
       <div class="upper">
-        <div class="close-icon" @click="closeDrawer"></div>
+        <div class="close-button-container">
+          <div class="icon-container" @click="closeDrawer">
+            <IconBase>
+              <IconClose></IconClose>
+            </IconBase>
+          </div>
+        </div>
         <nav>
           <ul>
             <li v-for="(item, index) in menuItems" :key="index">
@@ -23,8 +29,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconClose from '@/components/icons/IconClose.vue'
 
 export default Vue.extend({
+  components: {
+    IconBase,
+    IconClose,
+  },
   data() {
     return {
       menuItems: [] as {
@@ -85,11 +97,18 @@ section.drawer-container {
     gap: 64px;
   }
 }
-.close-icon {
+.close-button-container {
+  display: flex;
+}
+.icon-container {
   cursor: pointer;
-  width: 32px;
   height: 32px;
-  background-color: $color-grey-3;
+
+  &:hover {
+    path {
+      fill: black;
+    }
+  }
 }
 ul {
   display: flex;
