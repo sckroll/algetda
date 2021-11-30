@@ -44,3 +44,9 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+* {
+  transition: all 0.15s ease;
+}
+</style>
