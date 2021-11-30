@@ -1,14 +1,30 @@
 <template>
   <header class="header-bar">
     <div class="left">
-      <div class="drawer-icon" @click="openDrawer"></div>
+      <div class="drawer-icon" @click="openDrawer">
+        <IconBase>
+          <IconDrawer></IconDrawer>
+        </IconBase>
+      </div>
       <Logo></Logo>
       <div class="curr-algorithm"></div>
     </div>
     <div class="right">
-      <div class="gear-icon" @click="openSettingsPopup"></div>
-      <a href="http://sckroll.github.io" class="home-icon"></a>
-      <a href="https://github.com/sckroll/algetda" class="github-icon"></a>
+      <div class="gear-icon" @click="openSettingsPopup">
+        <IconBase>
+          <IconSettings></IconSettings>
+        </IconBase>
+      </div>
+      <a href="http://sckroll.github.io" class="home-icon">
+        <IconBase>
+          <IconHome></IconHome>
+        </IconBase>
+      </a>
+      <a href="https://github.com/sckroll/algetda" class="github-icon">
+        <IconBase viewBox="0 0 496 512" color="black">
+          <IconGitHub></IconGitHub>
+        </IconBase>
+      </a>
     </div>
   </header>
 </template>
@@ -16,10 +32,20 @@
 <script lang="ts">
 import Vue from 'vue'
 import Logo from '@/components/Logo.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconDrawer from '@/components/icons/IconDrawer.vue'
+import IconSettings from '@/components/icons/IconSettings.vue'
+import IconHome from '@/components/icons/IconHome.vue'
+import IconGitHub from '@/components/icons/IconGitHub.vue'
 
 export default Vue.extend({
   components: {
     Logo,
+    IconBase,
+    IconDrawer,
+    IconSettings,
+    IconHome,
+    IconGitHub,
   },
   methods: {
     openDrawer() {
@@ -54,14 +80,16 @@ header.header-bar {
     gap: 16px;
   }
 }
-.drawer-icon,
-.gear-icon,
-.home-icon,
-.github-icon {
+svg {
   cursor: pointer;
-  width: 32px;
-  height: 32px;
-  background-color: $color-grey-3;
+
+  &:hover {
+    path {
+      fill: black;
+    }
+  }
+}
+a {
   border-bottom: none;
 
   &:hover {
