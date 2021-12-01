@@ -1,6 +1,6 @@
 <template>
   <header class="header-bar">
-    <div class="left">
+    <div class="left-side">
       <div class="icon-container" @click="openDrawer">
         <IconBase>
           <IconDrawer></IconDrawer>
@@ -9,22 +9,37 @@
       <Logo></Logo>
       <div class="curr-algorithm"></div>
     </div>
-    <div class="right">
-      <div class="icon-container" @click="openSettingsPopup">
-        <IconBase>
-          <IconSettings></IconSettings>
-        </IconBase>
-      </div>
-      <a href="http://sckroll.github.io" class="icon-container">
-        <IconBase>
-          <IconHome></IconHome>
-        </IconBase>
-      </a>
-      <a href="https://github.com/sckroll/algetda" class="icon-container">
-        <IconBase viewBox="0 0 496 512" color="black">
-          <IconGitHub></IconGitHub>
-        </IconBase>
-      </a>
+    <div class="right-side">
+      <TooltipContainer arrow="up center">
+        <template slot="element">
+          <div class="icon-container" @click="openSettingsPopup">
+            <IconBase>
+              <IconSettings></IconSettings>
+            </IconBase>
+          </div>
+        </template>
+        <template slot="content">설정</template>
+      </TooltipContainer>
+      <TooltipContainer arrow="up center">
+        <template slot="element">
+          <a href="http://sckroll.github.io" class="icon-container">
+            <IconBase>
+              <IconHome></IconHome>
+            </IconBase>
+          </a>
+        </template>
+        <template slot="content">제작자 홈페이지</template>
+      </TooltipContainer>
+      <TooltipContainer arrow="up right">
+        <template slot="element">
+          <a href="https://github.com/sckroll/algetda" class="icon-container">
+            <IconBase viewBox="0 0 496 512" color="black">
+              <IconGitHub></IconGitHub>
+            </IconBase>
+          </a>
+        </template>
+        <template slot="content">GitHub</template>
+      </TooltipContainer>
     </div>
   </header>
 </template>
@@ -32,6 +47,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Logo from '@/components/common/Logo.vue'
+import TooltipContainer from '@/components/common/TooltipContainer.vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconDrawer from '@/components/icons/IconDrawer.vue'
 import IconSettings from '@/components/icons/IconSettings.vue'
@@ -41,6 +57,7 @@ import IconGitHub from '@/components/icons/IconGitHub.vue'
 export default Vue.extend({
   components: {
     Logo,
+    TooltipContainer,
     IconBase,
     IconDrawer,
     IconSettings,
@@ -73,8 +90,8 @@ header.header-bar {
   backdrop-filter: blur(6px);
   box-shadow: 0 0 4px 2px rgba(black, 0.3);
 
-  .left,
-  .right {
+  .left-side,
+  .right-side {
     display: flex;
     align-items: center;
     gap: 16px;

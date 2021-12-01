@@ -87,8 +87,10 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.elementWidth = (this.$refs.tooltip as HTMLDivElement).clientWidth
-    this.elementHeight = (this.$refs.tooltip as HTMLDivElement).clientHeight
+    const el = this.$refs.tooltip as HTMLDivElement
+
+    this.elementWidth = el.clientWidth
+    this.elementHeight = el.clientHeight
   },
   beforeDestroy() {
     window.removeEventListener('click', this.toggleClickHandler)
@@ -130,6 +132,9 @@ export default Vue.extend({
   &.right {
     justify-content: flex-end;
   }
+}
+.tooltip-target {
+  display: flex;
 }
 .toggle {
   cursor: pointer;
