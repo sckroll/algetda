@@ -1,6 +1,6 @@
 <template>
   <D3Network
-    :net-nodes="nodes"
+    :net-nodes="styledNodes"
     :net-links="links"
     :options="options"
     class="network-container"
@@ -10,6 +10,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import D3Network from 'vue-d3-network'
+import colors from '@/assets/scss/exportedVariables.scss'
 
 interface NodeObject {
   id: number
@@ -51,8 +52,19 @@ export default Vue.extend({
       options: {
         nodeSize: 32,
         linkWidth: 4,
+        nodeLabels: true,
+        linkLabels: true,
+        fontSize: 16,
       },
     }
+  },
+  computed: {
+    styledNodes(): NodeObject[] {
+      return this.nodes.map(node => ({
+        ...node,
+        _color: colors.colorPrimary,
+      }))
+    },
   },
 })
 </script>
