@@ -1,6 +1,6 @@
 export interface NodeObject {
   id: number
-  name?: string
+  name: number | string
   _color?: string
   _cssClass?: string
   _labelClass?: string
@@ -12,8 +12,8 @@ export interface NodeObject {
 
 export interface LinkObject {
   id?: number
-  name?: string
-  tid: number
+  name?: number | string
   sid: number
+  tid: number
   _color?: string
 }
