@@ -23,6 +23,7 @@ main.main-container {
   padding-top: 64px;
 }
 section.visual-area {
+  z-index: 0;
   position: absolute;
   top: 0;
   width: 100%;

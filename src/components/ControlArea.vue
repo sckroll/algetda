@@ -10,6 +10,7 @@ export default Vue.extend({})
 
 <style lang="scss" scoped>
 section {
+  z-index: 8;
   position: absolute;
   top: 0;
   width: 100%;
