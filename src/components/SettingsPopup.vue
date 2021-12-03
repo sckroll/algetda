@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay" @click.self="closeSettingsPopup">
+  <div class="overlay" @mousedown.self="closeSettingsPopup">
     <section class="settings-container">
       <header class="popup-header">
         <h2>Settings</h2>
