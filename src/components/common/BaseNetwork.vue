@@ -1,6 +1,6 @@
 <template>
   <D3Network
-    :net-nodes="styledNodes"
+    :net-nodes="nodes"
     :net-links="links"
     :options="options"
     class="network-container"
@@ -50,21 +50,14 @@ export default Vue.extend({
   data() {
     return {
       options: {
-        nodeSize: 32,
+        nodeSize: 48,
         linkWidth: 4,
         nodeLabels: true,
         linkLabels: true,
-        fontSize: 16,
+        fontSize: 20,
+        force: 4096,
       },
     }
-  },
-  computed: {
-    styledNodes(): NodeObject[] {
-      return this.nodes.map(node => ({
-        ...node,
-        _color: colors.colorPrimary,
-      }))
-    },
   },
 })
 </script>
