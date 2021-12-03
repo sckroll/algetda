@@ -22,7 +22,6 @@ interface NodeObject {
   _size?: number
   _width?: number
   _height?: number
-  _svgAttrs?: any
 }
 interface LinkObject {
   id?: number
@@ -30,7 +29,6 @@ interface LinkObject {
   tid: number
   sid: number
   _color?: string
-  _svgAttrs?: any
 }
 
 export default Vue.extend({
@@ -46,6 +44,10 @@ export default Vue.extend({
       type: Array as PropType<LinkObject[]>,
       required: true,
     },
+    directional: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -60,35 +62,45 @@ export default Vue.extend({
     }
   },
   mounted() {
-    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
-    const marker = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'marker',
-    )
-    const polygon = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'polygon',
-    )
-    const linksGroup = this.$el.querySelector('#l-links')
-
-    marker.setAttributeNS(null, 'id', 'arrow-head')
-    marker.setAttributeNS(null, 'orient', 'auto')
-    marker.setAttributeNS(null, 'markerWidth', '4')
-    marker.setAttributeNS(null, 'markerHeight', '4')
-    marker.setAttributeNS(null, 'refX', '10')
-    marker.setAttributeNS(null, 'refY', '2')
-    polygon.setAttributeNS(null, 'points', '0 0, 4 2, 0 4')
-    polygon.setAttributeNS(null, 'fill', colors.colorSecondary)
-
-    marker.appendChild(polygon)
-    defs.appendChild(marker)
-    linksGroup?.prepend(defs)
-
-    for (let i = 0; i < this.links.length; i++) {
-      this.$el
-        .querySelector(`#link-${i}`)
-        ?.setAttributeNS(null, 'marker-end', 'url(#arrow-head)')
+    if (this.directional) {
+      this.addArrow()
     }
+  },
+  methods: {
+    addArrow() {
+      const defs = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'defs',
+      )
+      const marker = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'marker',
+      )
+      const polygon = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'polygon',
+      )
+      const linksGroup = this.$el.querySelector('#l-links')
+
+      marker.setAttributeNS(null, 'id', 'arrow-head')
+      marker.setAttributeNS(null, 'orient', 'auto')
+      marker.setAttributeNS(null, 'markerWidth', '4')
+      marker.setAttributeNS(null, 'markerHeight', '4')
+      marker.setAttributeNS(null, 'refX', '10')
+      marker.setAttributeNS(null, 'refY', '2')
+      polygon.setAttributeNS(null, 'points', '0 0, 4 2, 0 4')
+      polygon.setAttributeNS(null, 'fill', colors.colorSecondary)
+
+      marker.appendChild(polygon)
+      defs.appendChild(marker)
+      linksGroup?.prepend(defs)
+
+      for (let i = 0; i < this.links.length; i++) {
+        this.$el
+          .querySelector(`#link-${i}`)
+          ?.setAttributeNS(null, 'marker-end', 'url(#arrow-head)')
+      }
+    },
   },
 })
 </script>
