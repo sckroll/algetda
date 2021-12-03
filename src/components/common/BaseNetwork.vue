@@ -11,25 +11,7 @@
 import Vue, { PropType } from 'vue'
 import D3Network from 'vue-d3-network'
 import colors from '@/assets/scss/exportedVariables.scss'
-
-interface NodeObject {
-  id: number
-  name?: string
-  _color?: string
-  _cssClass?: string
-  _labelClass?: string
-  svgSym?: SVGElement
-  _size?: number
-  _width?: number
-  _height?: number
-}
-interface LinkObject {
-  id?: number
-  name?: string
-  tid: number
-  sid: number
-  _color?: string
-}
+import { NodeObject, LinkObject } from '@/network-graph.d'
 
 export default Vue.extend({
   components: {
