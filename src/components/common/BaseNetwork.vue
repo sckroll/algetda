@@ -16,15 +16,14 @@
       :offsetX="tooltipOffsetX"
       :offsetY="tooltipOffsetY"
     >
-      <BaseInput v-model="newValue" short></BaseInput>
-      <div class="icon-container">
+      <BaseInput v-model="newValue" short @enter="addNode"></BaseInput>
+      <div
+        class="icon-container"
+        :class="{ disabled: newValue.length === 0 }"
+        @click="addNode"
+      >
         <IconBase>
           <IconAdd></IconAdd>
-        </IconBase>
-      </div>
-      <div class="icon-container">
-        <IconBase>
-          <IconRemove></IconRemove>
         </IconBase>
       </div>
     </BaseTooltip>
@@ -39,8 +38,9 @@ import BaseInput from '@/components/common/BaseInput.vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconAdd from '@/components/icons/IconAdd.vue'
 import IconRemove from '@/components/icons/IconRemove.vue'
+import IconConfirm from '@/components/icons/IconConfirm.vue'
 import colors from '@/assets/scss/exportedVariables.scss'
-import { NodeObject, LinkObject } from '@/network-graph.d'
+import { NewNode, NewLink, NodeObject, LinkObject } from '@/network-graph.d'
 
 export default Vue.extend({
   components: {
@@ -49,15 +49,16 @@ export default Vue.extend({
     BaseInput,
     IconBase,
     IconAdd,
-    IconRemove,
+    // IconRemove,
+    // IconConfirm
   },
   props: {
     nodes: {
-      type: Array as PropType<NodeObject[]>,
+      type: Array as PropType<NewNode[]>,
       required: true,
     },
     links: {
-      type: Array as PropType<LinkObject[]>,
+      type: Array as PropType<NewLink[]>,
       required: true,
     },
     directional: {
@@ -79,7 +80,21 @@ export default Vue.extend({
       tooltipOffsetX: 0,
       tooltipOffsetY: 0,
       newValue: '',
+      currSid: null as NodeObject | null,
+      currTid: null as NodeObject | null,
     }
+  },
+  watch: {
+    links: {
+      deep: true,
+      handler(val) {
+        for (let i = 0; i < val.length; i++) {
+          this.$el
+            .querySelector(`#link-${i}`)
+            ?.setAttributeNS(null, 'marker-end', 'url(#arrow-head)')
+        }
+      },
+    },
   },
   mounted() {
     if (this.directional) {
@@ -117,19 +132,14 @@ export default Vue.extend({
       marker.appendChild(polygon)
       defs.appendChild(marker)
       linksGroup?.prepend(defs)
-
-      for (let i = 0; i < this.links.length; i++) {
-        this.$el
-          .querySelector(`#link-${i}`)
-          ?.setAttributeNS(null, 'marker-end', 'url(#arrow-head)')
-      }
     },
     clickNode(e: PointerEvent, node: NodeObject) {
       console.log(e)
       console.log(node)
     },
     clickLink(e: PointerEvent, link: LinkObject) {
-      console.log(`${link.sid} -> ${link.tid}`)
+      this.currSid = link.source
+      this.currTid = link.target
 
       this.tooltipOffsetX = e.clientX
       this.tooltipOffsetY = e.clientY
@@ -138,17 +148,28 @@ export default Vue.extend({
     },
     showTooltip() {
       this.tooltip = true
+
       window.addEventListener('click', this.toggleClickHandler)
     },
     hideTooltip() {
       this.tooltip = false
+
       this.newValue = ''
+      this.currSid = null
+      this.currTid = null
+
       window.removeEventListener('click', this.toggleClickHandler)
     },
     toggleClickHandler({ target }: MouseEvent) {
       if (!(target as HTMLElement).classList.contains('click-safe')) {
         this.hideTooltip()
       }
+    },
+    addNode() {
+      if (this.newValue.length === 0) return
+
+      this.$emit('node-add', this.newValue, this.currSid, this.currTid)
+      this.hideTooltip()
     },
   },
 })
@@ -162,6 +183,20 @@ export default Vue.extend({
 }
 .icon-container {
   height: 32px;
+
+  &.disabled {
+    svg {
+      cursor: default;
+    }
+    * {
+      stroke: $color-grey-2;
+    }
+    &:hover {
+      * {
+        fill: transparent;
+      }
+    }
+  }
 }
 svg {
   cursor: pointer;
