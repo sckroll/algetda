@@ -34,10 +34,12 @@ export default Vue.extend({
     vertical: {
       type: String,
       default: 'up',
+      validator: val => ['up', 'down'].includes(val),
     },
     horizontal: {
       type: String,
       default: 'center',
+      validator: val => ['left', 'center', 'right'].includes(val),
     },
     elementWidth: {
       type: Number,
