@@ -1,11 +1,12 @@
 <template>
-  <label class="input-container" :class="{ vertical }">
+  <label class="input-container click-safe" :class="{ vertical }">
     <slot></slot>
     <input
       :type="type"
       :placeholder="placeholder"
       :disabled="disabled"
-      :class="{ disabled }"
+      :class="{ disabled, short }"
+      class="click-safe"
       :value="value"
       @input="handleInput"
     />
@@ -32,6 +33,10 @@ export default Vue.extend({
       default: false,
     },
     vertical: {
+      type: Boolean,
+      default: false,
+    },
+    short: {
       type: Boolean,
       default: false,
     },
@@ -78,6 +83,9 @@ input {
     border: 3px solid $color-grey-2;
     color: $color-grey-2;
     background-color: $color-grey-4;
+  }
+  &.short {
+    width: 64px;
   }
 }
 </style>
