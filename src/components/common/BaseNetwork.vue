@@ -115,19 +115,19 @@ export default Vue.extend({
       this.tooltipOffsetX = e.clientX
       this.tooltipOffsetY = e.clientY
 
-      this.toggleTooltip()
+      this.showTooltip()
     },
-    toggleTooltip() {
-      this.tooltip = !this.tooltip
-      if (this.tooltip) {
-        window.addEventListener('click', this.toggleClickHandler)
-      } else {
-        window.removeEventListener('click', this.toggleClickHandler)
-      }
+    showTooltip() {
+      this.tooltip = true
+      window.addEventListener('click', this.toggleClickHandler)
+    },
+    hideTooltip() {
+      this.tooltip = false
+      window.removeEventListener('click', this.toggleClickHandler)
     },
     toggleClickHandler({ target }: MouseEvent) {
       if (!(target as HTMLElement).classList.contains('click-safe')) {
-        this.toggleTooltip()
+        this.hideTooltip()
       }
     },
   },
