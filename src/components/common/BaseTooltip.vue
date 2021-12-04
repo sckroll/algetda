@@ -2,7 +2,7 @@
   <div
     class="tooltip"
     :class="{ show: value, [horizontal]: horizontal }"
-    :style="`margin-top: ${offsetHeight}px;`"
+    :style="offset"
   >
     <div
       v-if="vertical === 'up'"
@@ -49,22 +49,42 @@ export default Vue.extend({
       type: Number,
       default: 0,
     },
+    offsetX: {
+      type: Number,
+    },
+    offsetY: {
+      type: Number,
+    },
   },
   data() {
     return {
+      tooltipWidth: 0,
       tooltipHeight: 0,
     }
   },
   computed: {
-    offsetHeight(): number {
+    offset(): string {
       if (this.vertical === 'up') {
-        return this.elementHeight
+        if (this.offsetX && this.offsetY) {
+          const x = this.offsetX - this.tooltipWidth / 2
+          const y = this.offsetY + 4
+          return `left: ${x}px; top: ${y}px;`
+        } else {
+          return `margin-top: ${this.elementHeight}px;`
+        }
       } else {
-        return -this.tooltipHeight
+        if (this.offsetX && this.offsetY) {
+          const x = this.offsetX - this.tooltipWidth / 2
+          const y = this.offsetY - this.tooltipHeight - 4
+          return `left: ${x}px; top: ${y}px;`
+        } else {
+          return `margin-top: ${-this.tooltipHeight}px;`
+        }
       }
     },
   },
   mounted() {
+    this.tooltipWidth = (this.$el as HTMLDivElement).clientWidth
     this.tooltipHeight = (this.$el as HTMLDivElement).clientHeight
   },
 })
