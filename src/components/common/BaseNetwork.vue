@@ -16,7 +16,17 @@
       :offsetX="tooltipOffsetX"
       :offsetY="tooltipOffsetY"
     >
-      test
+      <BaseInput v-model="newValue" short></BaseInput>
+      <div class="icon-container">
+        <IconBase>
+          <IconAdd></IconAdd>
+        </IconBase>
+      </div>
+      <div class="icon-container">
+        <IconBase>
+          <IconRemove></IconRemove>
+        </IconBase>
+      </div>
     </BaseTooltip>
   </div>
 </template>
@@ -25,6 +35,10 @@
 import Vue, { PropType } from 'vue'
 import D3Network from 'vue-d3-network'
 import BaseTooltip from '@/components/common/BaseTooltip.vue'
+import BaseInput from '@/components/common/BaseInput.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconAdd from '@/components/icons/IconAdd.vue'
+import IconRemove from '@/components/icons/IconRemove.vue'
 import colors from '@/assets/scss/exportedVariables.scss'
 import { NodeObject, LinkObject } from '@/network-graph.d'
 
@@ -32,6 +46,10 @@ export default Vue.extend({
   components: {
     D3Network,
     BaseTooltip,
+    BaseInput,
+    IconBase,
+    IconAdd,
+    IconRemove,
   },
   props: {
     nodes: {
@@ -60,6 +78,7 @@ export default Vue.extend({
       tooltip: false,
       tooltipOffsetX: 0,
       tooltipOffsetY: 0,
+      newValue: '',
     }
   },
   mounted() {
@@ -110,7 +129,7 @@ export default Vue.extend({
       console.log(node)
     },
     clickLink(e: PointerEvent, link: LinkObject) {
-      console.log(link)
+      console.log(`${link.sid} -> ${link.tid}`)
 
       this.tooltipOffsetX = e.clientX
       this.tooltipOffsetY = e.clientY
@@ -123,6 +142,7 @@ export default Vue.extend({
     },
     hideTooltip() {
       this.tooltip = false
+      this.newValue = ''
       window.removeEventListener('click', this.toggleClickHandler)
     },
     toggleClickHandler({ target }: MouseEvent) {
@@ -139,5 +159,17 @@ export default Vue.extend({
 .svg-container {
   width: 100%;
   height: 100%;
+}
+.icon-container {
+  height: 32px;
+}
+svg {
+  cursor: pointer;
+
+  &:hover {
+    * {
+      fill: black;
+    }
+  }
 }
 </style>

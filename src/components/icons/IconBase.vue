@@ -5,10 +5,11 @@
     :height="height"
     :viewBox="viewBox"
     :aria-labelledby="iconName"
+    class="click-safe"
+    :fill="color"
+    :stroke="stroke"
   >
-    <g :fill="color" :stroke="stroke">
-      <slot />
-    </g>
+    <slot />
   </svg>
 </template>
 

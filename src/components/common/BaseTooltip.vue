@@ -117,6 +117,9 @@ $tooltip-background: rgba($color-grey-3, 0.7);
   }
 }
 .content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 16px;
   box-sizing: border-box;
   font-size: 0.9em;
