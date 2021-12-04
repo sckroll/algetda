@@ -9,6 +9,7 @@
       class="click-safe"
       :value="value"
       @input="handleInput"
+      @keypress="handleEnter"
     />
   </label>
 </template>
@@ -44,6 +45,11 @@ export default Vue.extend({
   methods: {
     handleInput({ target }: InputEvent) {
       this.$emit('input', (target as HTMLInputElement).value)
+    },
+    handleEnter({ key }: KeyboardEvent) {
+      if (key === 'Enter') {
+        this.$emit('enter')
+      }
     },
   },
 })
