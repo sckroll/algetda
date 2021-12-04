@@ -12,7 +12,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      values: [1, 2, 3, 4, 5] as (number | string)[],
+      values: ['1', '2', '3', '4', '5'],
     }
   },
   methods: {

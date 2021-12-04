@@ -1,6 +1,6 @@
 export interface NewNode {
   id: number
-  name: number | string
+  name: string
   _color?: string
   _cssClass?: string
   _labelClass?: string
@@ -12,7 +12,7 @@ export interface NewNode {
 
 export interface NewLink {
   id?: number
-  name?: number | string
+  name?: string
   index?: number
   sid: number
   tid: number
@@ -21,7 +21,7 @@ export interface NewLink {
 
 export interface NodeObject {
   id: number
-  name: number | string
+  name: string
   index: number
   pinned: boolean
   x: number

@@ -18,7 +18,7 @@ export default Vue.extend({
   },
   props: {
     values: {
-      type: Array as PropType<(number | string)[]>,
+      type: Array as PropType<string[]>,
       required: true,
     },
   },
