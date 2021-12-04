@@ -1,21 +1,37 @@
 <template>
-  <D3Network
-    :net-nodes="nodes"
-    :net-links="links"
-    :options="options"
-    class="network-container"
-  ></D3Network>
+  <div class="network-container">
+    <D3Network
+      :net-nodes="nodes"
+      :net-links="links"
+      :options="options"
+      class="svg-container"
+      @node-click="clickNode"
+      @link-click.stop="clickLink"
+    ></D3Network>
+    <BaseTooltip
+      v-model="tooltip"
+      vertical="down"
+      :elementWidth="options.nodeSize"
+      :elementHeight="options.nodeSize"
+      :offsetX="tooltipOffsetX"
+      :offsetY="tooltipOffsetY"
+    >
+      test
+    </BaseTooltip>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import D3Network from 'vue-d3-network'
+import BaseTooltip from '@/components/common/BaseTooltip.vue'
 import colors from '@/assets/scss/exportedVariables.scss'
 import { NodeObject, LinkObject } from '@/network-graph.d'
 
 export default Vue.extend({
   components: {
     D3Network,
+    BaseTooltip,
   },
   props: {
     nodes: {
@@ -41,12 +57,18 @@ export default Vue.extend({
         fontSize: 20,
         force: 4096,
       },
+      tooltip: false,
+      tooltipOffsetX: 0,
+      tooltipOffsetY: 0,
     }
   },
   mounted() {
     if (this.directional) {
       this.addArrow()
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener('click', this.toggleClickHandler)
   },
   methods: {
     addArrow() {
@@ -83,12 +105,38 @@ export default Vue.extend({
           ?.setAttributeNS(null, 'marker-end', 'url(#arrow-head)')
       }
     },
+    clickNode(e: PointerEvent, node: NodeObject) {
+      console.log(e)
+      console.log(node)
+    },
+    clickLink(e: PointerEvent, link: LinkObject) {
+      console.log(link)
+
+      this.tooltipOffsetX = e.clientX
+      this.tooltipOffsetY = e.clientY
+
+      this.toggleTooltip()
+    },
+    toggleTooltip() {
+      this.tooltip = !this.tooltip
+      if (this.tooltip) {
+        window.addEventListener('click', this.toggleClickHandler)
+      } else {
+        window.removeEventListener('click', this.toggleClickHandler)
+      }
+    },
+    toggleClickHandler({ target }: MouseEvent) {
+      if (!(target as HTMLElement).classList.contains('click-safe')) {
+        this.toggleTooltip()
+      }
+    },
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.network-container {
+.network-container,
+.svg-container {
   width: 100%;
   height: 100%;
 }
