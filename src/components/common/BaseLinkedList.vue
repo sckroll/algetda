@@ -4,6 +4,7 @@
     :nodes="nodes"
     :links="links"
     @node-add="addNode"
+    @node-change="changeNode"
   ></BaseNetwork>
 </template>
 
@@ -79,6 +80,9 @@ export default Vue.extend({
 
       // 부모 컴포넌트로 이벤트 전달
       this.$emit('node-add', value, nextNodeIndex)
+    },
+    changeNode(value: string, index: number) {
+      this.$emit('node-change', value, index)
     },
   },
 })

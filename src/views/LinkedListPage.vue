@@ -1,5 +1,9 @@
 <template>
-  <BaseLinkedList :values="values" @node-add="addNode"></BaseLinkedList>
+  <BaseLinkedList
+    :values="values"
+    @node-add="addNode"
+    @node-change="changeNode"
+  ></BaseLinkedList>
 </template>
 
 <script lang="ts">
@@ -18,6 +22,9 @@ export default Vue.extend({
   methods: {
     addNode(value: string, nextNodeIndex: number) {
       this.values.splice(nextNodeIndex, 0, value)
+    },
+    changeNode(value: string, index: number) {
+      this.values[index] = value
     },
   },
 })

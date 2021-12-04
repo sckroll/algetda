@@ -5,7 +5,7 @@
       :net-links="links"
       :options="options"
       class="svg-container"
-      @node-click="clickNode"
+      @node-click.stop="clickNode"
       @link-click.stop="clickLink"
     ></D3Network>
     <BaseTooltip
@@ -16,16 +16,38 @@
       :offsetX="tooltipOffsetX"
       :offsetY="tooltipOffsetY"
     >
-      <BaseInput v-model="newValue" short @enter="addNode"></BaseInput>
-      <div
-        class="icon-container"
-        :class="{ disabled: newValue.length === 0 }"
-        @click="addNode"
-      >
-        <IconBase>
-          <IconAdd></IconAdd>
-        </IconBase>
-      </div>
+      <template v-if="isLink">
+        <BaseInput v-model="newValue" short @enter="addNode"></BaseInput>
+        <div
+          class="icon-container"
+          :class="{ disabled: newValue.length === 0 }"
+          @click="addNode"
+        >
+          <IconBase>
+            <IconAdd></IconAdd>
+          </IconBase>
+        </div>
+      </template>
+      <template v-else>
+        <BaseInput v-model="newValue" short @enter="changeNode"></BaseInput>
+        <div
+          class="icon-container"
+          :class="{ disabled: newValue.length === 0 }"
+          @click="changeNode"
+        >
+          <IconBase>
+            <IconConfirm></IconConfirm>
+          </IconBase>
+        </div>
+        <div
+          class="icon-container"
+          :class="{ disabled: newValue.length === 0 }"
+        >
+          <IconBase>
+            <IconRemove></IconRemove>
+          </IconBase>
+        </div>
+      </template>
     </BaseTooltip>
   </div>
 </template>
@@ -49,8 +71,8 @@ export default Vue.extend({
     BaseInput,
     IconBase,
     IconAdd,
-    // IconRemove,
-    // IconConfirm
+    IconRemove,
+    IconConfirm,
   },
   props: {
     nodes: {
@@ -79,9 +101,11 @@ export default Vue.extend({
       tooltip: false,
       tooltipOffsetX: 0,
       tooltipOffsetY: 0,
+      isLink: false,
       newValue: '',
       currSid: null as NodeObject | null,
       currTid: null as NodeObject | null,
+      currNode: null as NodeObject | null,
     }
   },
   watch: {
@@ -134,12 +158,22 @@ export default Vue.extend({
       linksGroup?.prepend(defs)
     },
     clickNode(e: PointerEvent, node: NodeObject) {
-      console.log(e)
-      console.log(node)
+      this.isLink = false
+
+      this.currNode = node
+      this.newValue = node.name
+
+      this.tooltipOffsetX = e.clientX
+      this.tooltipOffsetY = e.clientY
+
+      this.showTooltip()
     },
     clickLink(e: PointerEvent, link: LinkObject) {
+      this.isLink = true
+
       this.currSid = link.source
       this.currTid = link.target
+      this.newValue = ''
 
       this.tooltipOffsetX = e.clientX
       this.tooltipOffsetY = e.clientY
@@ -155,6 +189,7 @@ export default Vue.extend({
       this.tooltip = false
 
       this.newValue = ''
+      this.currNode = null
       this.currSid = null
       this.currTid = null
 
@@ -169,6 +204,14 @@ export default Vue.extend({
       if (this.newValue.length === 0) return
 
       this.$emit('node-add', this.newValue, this.currSid, this.currTid)
+      this.hideTooltip()
+    },
+    changeNode() {
+      if (!this.currNode) return
+
+      this.currNode.name = this.newValue
+      const index = this.nodes.findIndex(node => node.id === this.currNode?.id)
+      this.$emit('node-change', this.newValue, index)
       this.hideTooltip()
     },
   },
