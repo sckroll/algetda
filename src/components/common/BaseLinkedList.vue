@@ -19,7 +19,15 @@ export default Vue.extend({
   },
   computed: {
     nodes(): NodeObject[] {
-      return this.values.map((value, index) => ({ id: index, name: value }))
+      return this.values.map((value, index) => ({
+        id: index,
+        name: value,
+        fx:
+          ((window.innerWidth - 400 * 2) / (this.values.length - 1)) * index +
+          400,
+        fy: window.innerHeight / 2,
+        pinned: true,
+      }))
     },
     links(): LinkObject[] {
       return this.values
