@@ -1,6 +1,6 @@
 <template>
   <BaseNetwork
-    directional
+    directed
     :nodes="nodes"
     :links="links"
     @node-add="addNode"

@@ -84,7 +84,7 @@ export default Vue.extend({
       type: Array as PropType<NewLink[]>,
       required: true,
     },
-    directional: {
+    directed: {
       type: Boolean,
       default: false,
     },
@@ -119,7 +119,7 @@ export default Vue.extend({
     },
   },
   mounted() {
-    if (this.directional) {
+    if (this.directed) {
       this.addArrow()
     }
   },
