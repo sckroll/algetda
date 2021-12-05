@@ -74,8 +74,9 @@ export default Vue.extend({
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 110%;
   height: 100%;
+  background-color: rgba(black, 0.3);
 }
 section.drawer-container {
   width: 384px;
@@ -89,7 +90,6 @@ section.drawer-container {
   padding: 16px;
   box-sizing: border-box;
   background-color: $color-grey-4;
-  box-shadow: 0 0 4px 2px rgba(black, 0.3);
 
   .upper {
     display: flex;
