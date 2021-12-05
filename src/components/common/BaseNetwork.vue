@@ -210,7 +210,7 @@ export default Vue.extend({
       this.hideTooltip()
     },
     removeNode() {
-      if (!this.currNode) return
+      if (!this.currNode || this.nodes.length < 2) return
 
       this.$emit('node-remove', this.currNode.index, this.currNode.id)
       this.hideTooltip()
