@@ -96,12 +96,26 @@ export default Vue.extend({
       }
 
       // 3. 기존의 진입 간선과 진출 간선 삭제
-      if (inLink) {
-        this.links.splice((inLink as LinkObject).index, 1)
-      }
-      if (outLink) {
-        this.links.splice((outLink as LinkObject).index - 1, 1)
-      }
+      this.links = this.links.filter(link => {
+        if (inLink && outLink) {
+          return !(
+            (link.sid === (inLink as LinkObject).sid &&
+              link.tid === (inLink as LinkObject).tid) ||
+            (link.sid === (outLink as LinkObject).sid &&
+              link.tid === (outLink as LinkObject).tid)
+          )
+        } else if (inLink) {
+          return (
+            link.sid !== (inLink as LinkObject).sid ||
+            link.tid !== (inLink as LinkObject).tid
+          )
+        } else {
+          return (
+            link.sid !== (outLink as LinkObject).sid ||
+            link.tid !== (outLink as LinkObject).tid
+          )
+        }
+      })
 
       // 4. 노드 삭제
       this.nodes.splice(nodeIndex, 1)
