@@ -52,6 +52,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   store.commit('CLOSE_DRAWER')
+  store.commit('CLOSE_SETTINGS_POPUP')
   next()
 })
 
