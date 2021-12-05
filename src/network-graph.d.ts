@@ -8,6 +8,9 @@ export interface NewNode {
   _size?: number
   _width?: number
   _height?: number
+  fx?: number
+  fy?: number
+  pinned?: boolean
 }
 
 export interface NewLink {
