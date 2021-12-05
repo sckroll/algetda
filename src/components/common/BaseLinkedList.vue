@@ -11,7 +11,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import BaseNetwork from '@/components/common/BaseNetwork.vue'
-import { NewNode, NewLink, NodeObject } from '@/network-graph.d'
+import { NewNode, NewLink, LinkObject } from '@/network-graph.d'
 
 export default Vue.extend({
   components: {
@@ -47,7 +47,7 @@ export default Vue.extend({
     this.lastNodeId = this.values.length - 1
   },
   methods: {
-    addNode(value: string, source: NodeObject, target: NodeObject) {
+    addNode(value: string, { source, target, index: linkIndex }: LinkObject) {
       // 노드 추가
       const newNode = {
         id: ++this.lastNodeId,
@@ -56,10 +56,7 @@ export default Vue.extend({
         fy: source.y - Math.abs(source.x - target.x) / 2,
         pinned: true,
       }
-      const nextNodeIndex = this.nodes.findIndex(node => {
-        return node.id === target.id
-      })
-      this.nodes.splice(nextNodeIndex, 0, newNode)
+      this.nodes.splice(target.index, 0, newNode)
 
       // 간선 추가
       const newPrevLink = {
@@ -73,13 +70,10 @@ export default Vue.extend({
       this.links.push(newPrevLink, newNextLink)
 
       // 기존 간선 삭제
-      const removedLinkIndex = this.links.findIndex(link => {
-        return link.sid === source.id && link.tid === target.id
-      })
-      this.links.splice(removedLinkIndex, 1)
+      this.links.splice(linkIndex, 1)
 
       // 부모 컴포넌트로 이벤트 전달
-      this.$emit('node-add', value, nextNodeIndex)
+      this.$emit('node-add', value, target.index)
     },
     changeNode(value: string, index: number) {
       this.$emit('node-change', value, index)

@@ -39,10 +39,7 @@
             <IconConfirm></IconConfirm>
           </IconBase>
         </div>
-        <div
-          class="icon-container"
-          :class="{ disabled: newValue.length === 0 }"
-        >
+        <div class="icon-container" :class="{ disabled: nodes.length < 2 }">
           <IconBase>
             <IconRemove></IconRemove>
           </IconBase>
@@ -103,9 +100,8 @@ export default Vue.extend({
       tooltipOffsetY: 0,
       isLink: false,
       newValue: '',
-      currSid: null as NodeObject | null,
-      currTid: null as NodeObject | null,
       currNode: null as NodeObject | null,
+      currLink: null as LinkObject | null,
     }
   },
   watch: {
@@ -171,8 +167,7 @@ export default Vue.extend({
     clickLink(e: PointerEvent, link: LinkObject) {
       this.isLink = true
 
-      this.currSid = link.source
-      this.currTid = link.target
+      this.currLink = link
       this.newValue = ''
 
       this.tooltipOffsetX = e.clientX
@@ -190,8 +185,7 @@ export default Vue.extend({
 
       this.newValue = ''
       this.currNode = null
-      this.currSid = null
-      this.currTid = null
+      this.currLink = null
 
       window.removeEventListener('click', this.toggleClickHandler)
     },
@@ -203,15 +197,14 @@ export default Vue.extend({
     addNode() {
       if (this.newValue.length === 0) return
 
-      this.$emit('node-add', this.newValue, this.currSid, this.currTid)
+      this.$emit('node-add', this.newValue, this.currLink)
       this.hideTooltip()
     },
     changeNode() {
       if (!this.currNode) return
 
       this.currNode.name = this.newValue
-      const index = this.nodes.findIndex(node => node.id === this.currNode?.id)
-      this.$emit('node-change', this.newValue, index)
+      this.$emit('node-change', this.newValue, this.currNode.index)
       this.hideTooltip()
     },
   },
