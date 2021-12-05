@@ -29,25 +29,28 @@ export default Vue.extend({
       nodes: [] as (NewNode | NodeObject)[],
       links: [] as (NewLink | LinkObject)[],
       lastNodeId: 0,
-      lastLinkId: 0,
     }
   },
   mounted() {
-    this.nodes = this.values.map((value, index) => ({
-      id: index,
-      name: value,
-      fx:
-        ((window.innerWidth - 400 * 2) / (this.values.length - 1)) * index +
-        400,
-      fy: window.innerHeight / 2,
-      pinned: true,
-    }))
+    this.nodes = this.values.map((value, index) => {
+      const fx =
+        this.values.length > 1
+          ? ((window.innerWidth - 400 * 2) / (this.values.length - 1)) * index +
+            400
+          : window.innerWidth / 2
+      return {
+        id: index,
+        name: value,
+        fx,
+        fy: window.innerHeight / 2,
+        pinned: true,
+      }
+    })
     this.links = this.values
       .slice(0, this.values.length - 1)
       .map((_, index) => ({ sid: index, tid: index + 1 }))
 
     this.lastNodeId = this.values.length - 1
-    this.lastLinkId = this.values.length - 2
   },
   methods: {
     addNode(value: string, { source, target, index: linkIndex }: LinkObject) {
@@ -59,6 +62,7 @@ export default Vue.extend({
         fy: source.y - Math.abs(source.x - target.x) / 2,
         pinned: true,
       }
+
       this.nodes.splice(target.index, 0, newNode)
 
       // 2. 간선 추가
