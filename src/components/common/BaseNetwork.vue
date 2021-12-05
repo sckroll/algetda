@@ -39,7 +39,11 @@
             <IconConfirm></IconConfirm>
           </IconBase>
         </div>
-        <div class="icon-container" :class="{ disabled: nodes.length < 2 }">
+        <div
+          class="icon-container"
+          :class="{ disabled: nodes.length < 2 }"
+          @click="removeNode"
+        >
           <IconBase>
             <IconRemove></IconRemove>
           </IconBase>
@@ -107,12 +111,10 @@ export default Vue.extend({
   watch: {
     links: {
       deep: true,
-      handler(val) {
-        for (let i = 0; i < val.length; i++) {
-          this.$el
-            .querySelector(`#link-${i}`)
-            ?.setAttributeNS(null, 'marker-end', 'url(#arrow-head)')
-        }
+      handler() {
+        this.$el.querySelectorAll('path.link').forEach(link => {
+          link.setAttributeNS(null, 'marker-end', 'url(#arrow-head)')
+        })
       },
     },
   },
@@ -205,6 +207,12 @@ export default Vue.extend({
 
       this.currNode.name = this.newValue
       this.$emit('node-change', this.newValue, this.currNode.index)
+      this.hideTooltip()
+    },
+    removeNode() {
+      if (!this.currNode) return
+
+      this.$emit('node-remove', this.currNode.index, this.currNode.id)
       this.hideTooltip()
     },
   },

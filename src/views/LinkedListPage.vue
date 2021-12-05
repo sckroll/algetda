@@ -3,6 +3,7 @@
     :values="values"
     @node-add="addNode"
     @node-change="changeNode"
+    @node-remove="removeNode"
   ></BaseLinkedList>
 </template>
 
@@ -25,6 +26,9 @@ export default Vue.extend({
     },
     changeNode(value: string, index: number) {
       this.values[index] = value
+    },
+    removeNode(index: number) {
+      this.values.splice(index, 1)
     },
   },
 })
