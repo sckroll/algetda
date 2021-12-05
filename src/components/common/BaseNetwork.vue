@@ -32,7 +32,7 @@
         <BaseInput v-model="newValue" short @enter="changeNode"></BaseInput>
         <div
           class="icon-container"
-          :class="{ disabled: newValue.length === 0 }"
+          :class="{ disabled: newValue.length === 0 || newValue === prevValue }"
           @click="changeNode"
         >
           <IconBase>
@@ -103,6 +103,7 @@ export default Vue.extend({
       tooltipOffsetX: 0,
       tooltipOffsetY: 0,
       isLink: false,
+      prevValue: '',
       newValue: '',
       currNode: null as NodeObject | null,
       currLink: null as LinkObject | null,
@@ -159,6 +160,7 @@ export default Vue.extend({
       this.isLink = false
 
       this.currNode = node
+      this.prevValue = node.name
       this.newValue = node.name
 
       this.tooltipOffsetX = e.clientX
@@ -170,6 +172,7 @@ export default Vue.extend({
       this.isLink = true
 
       this.currLink = link
+      this.prevValue = ''
       this.newValue = ''
 
       this.tooltipOffsetX = e.clientX
@@ -185,6 +188,7 @@ export default Vue.extend({
     hideTooltip() {
       this.tooltip = false
 
+      this.prevValue = ''
       this.newValue = ''
       this.currNode = null
       this.currLink = null
@@ -203,7 +207,7 @@ export default Vue.extend({
       this.hideTooltip()
     },
     changeNode() {
-      if (!this.currNode) return
+      if (!this.currNode || this.newValue === this.prevValue) return
 
       this.currNode.name = this.newValue
       this.$emit('node-change', this.newValue, this.currNode.index)
