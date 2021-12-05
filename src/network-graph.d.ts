@@ -14,7 +14,7 @@ export interface NewNode {
 }
 
 export interface NewLink {
-  id?: number
+  id?: string
   name?: string
   index?: number
   sid: number
