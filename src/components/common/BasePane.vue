@@ -3,7 +3,11 @@
     <header>
       <div class="title-area">
         <h2><slot name="title"></slot></h2>
-        <div v-if="closeButton" class="close-button" @click="handleClose"></div>
+        <div v-if="closeButton" class="close-button" @click="handleClose">
+          <IconBase>
+            <IconClose></IconClose>
+          </IconBase>
+        </div>
       </div>
       <nav class="tabs" v-if="tabs">
         <div
@@ -30,6 +34,8 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconClose from '@/components/icons/IconClose.vue'
 
 interface Tab {
   name: string
@@ -37,6 +43,10 @@ interface Tab {
 }
 
 export default Vue.extend({
+  components: {
+    IconBase,
+    IconClose,
+  },
   props: {
     closeButton: {
       type: Boolean,
@@ -58,7 +68,7 @@ export default Vue.extend({
   },
   methods: {
     handleClose() {
-      this.$emit('click')
+      this.$emit('popup-close')
     },
     changeTab(tab: Tab) {
       this.selected = tab
@@ -76,6 +86,7 @@ section.pane-container {
   gap: 32px;
   padding: 32px;
   box-sizing: border-box;
+  border: 3px solid $color-grey-2;
   background-color: rgba($color-grey-4, 0.7);
   backdrop-filter: blur(8px);
 }
@@ -93,7 +104,12 @@ header {
   cursor: pointer;
   width: 32px;
   height: 32px;
-  background-color: $color-grey-3;
+
+  &:hover {
+    path {
+      fill: black;
+    }
+  }
 }
 nav.tabs {
   display: flex;

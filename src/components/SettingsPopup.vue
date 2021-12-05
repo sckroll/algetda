@@ -1,27 +1,64 @@
 <template>
   <div class="overlay" @mousedown.self="closeSettingsPopup">
-    <section class="settings-container">
-      <header class="popup-header">
-        <h2>Settings</h2>
-        <div class="close-button" @click="closeSettingsPopup"></div>
-      </header>
-      <nav class="tabs">
-        <div class="tab selected">Tab 1</div>
-        <div class="tab">Tab 2</div>
-        <div class="tab">Tab 3</div>
-      </nav>
-      <div class="popup-content"></div>
-    </section>
+    <BasePane
+      class="settings-container"
+      closeButton
+      :tabs="tabs"
+      @tab-select="selectTab"
+      @popup-close="closeSettingsPopup"
+    >
+      <template slot="title">Settings</template>
+      <template slot="content">
+        <component v-if="selectedTab" :is="selectedTab.component"></component>
+      </template>
+    </BasePane>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import BasePane from '@/components/common/BasePane.vue'
+
+interface Tab {
+  name: string
+  component: string
+}
 
 export default Vue.extend({
+  components: {
+    BasePane,
+    Tab1Content: () => import('@/components/Tab1Content.vue'),
+    Tab2Content: () => import('@/components/Tab2Content.vue'),
+    Tab3Content: () => import('@/components/Tab3Content.vue'),
+  },
+  data() {
+    return {
+      tabs: [
+        {
+          name: 'Tab1',
+          component: 'Tab1Content',
+        },
+        {
+          name: 'Tab2',
+          component: 'Tab2Content',
+        },
+        {
+          name: 'Tab3',
+          component: 'Tab3Content',
+        },
+      ],
+      selectedTab: null as Tab | null,
+    }
+  },
+  mounted() {
+    this.selectedTab = this.tabs[0]
+  },
   methods: {
     closeSettingsPopup() {
       this.$store.commit('CLOSE_SETTINGS_POPUP')
+    },
+    selectTab(tab: Tab) {
+      this.selectedTab = tab
     },
   },
 })
@@ -39,53 +76,8 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
 }
-section {
+.settings-container {
   width: 600px;
   height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 32px;
-  box-sizing: border-box;
-  background-color: rgba($color-grey-4, 0.7);
-  backdrop-filter: blur(8px);
-}
-header.popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.close-button {
-  cursor: pointer;
-  width: 32px;
-  height: 32px;
-  background-color: $color-grey-3;
-}
-.popup-content {
-  background-color: $color-grey-3;
-  height: 100%;
-}
-nav.tabs {
-  display: flex;
-  gap: 16px;
-  font-size: 1.25em;
-
-  .tab {
-    cursor: pointer;
-    padding: 4px 0;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s ease;
-
-    &.selected,
-    &:hover {
-      border-bottom: 2px solid $color-primary;
-      transition: all 0.15s ease;
-    }
-    &:active {
-      color: $color-primary;
-      transition: all 0.15s ease;
-    }
-  }
 }
 </style>
