@@ -88,7 +88,7 @@ header.header-bar {
   align-items: center;
   background-color: rgba($color-grey-4, 0.7);
   backdrop-filter: blur(6px);
-  box-shadow: 0 0 4px 2px rgba(black, 0.3);
+  box-shadow: 0 2px 4px 1px rgba(black, 0.25);
 
   .left-side,
   .right-side {

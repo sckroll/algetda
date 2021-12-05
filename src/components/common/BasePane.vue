@@ -86,9 +86,9 @@ section.pane-container {
   gap: 32px;
   padding: 32px;
   box-sizing: border-box;
-  border: 3px solid $color-grey-2;
   background-color: rgba($color-grey-4, 0.7);
   backdrop-filter: blur(8px);
+  box-shadow: 0 2px 4px 1px rgba(black, 0.25);
 }
 header {
   display: flex;

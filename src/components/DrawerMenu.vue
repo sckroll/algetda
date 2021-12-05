@@ -90,6 +90,7 @@ section.drawer-container {
   padding: 16px;
   box-sizing: border-box;
   background-color: $color-grey-4;
+  box-shadow: 0 2px 4px 1px rgba(black, 0.25);
 
   .upper {
     display: flex;
