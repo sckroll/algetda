@@ -1,25 +1,28 @@
 <template>
-  <div
-    class="tooltip"
-    :class="{ show: value, [horizontal]: horizontal }"
-    :style="offset"
-  >
+  <transition name="fade">
     <div
-      v-if="vertical === 'up'"
-      class="arrow-container"
-      :style="`width: ${elementWidth}px`"
+      v-if="value"
+      class="tooltip"
+      :class="{ [horizontal]: horizontal }"
+      :style="offset"
     >
-      <div class="arrow up click-safe"></div>
+      <div
+        v-if="vertical === 'up'"
+        class="arrow-container"
+        :style="`width: ${elementWidth}px`"
+      >
+        <div class="arrow up click-safe"></div>
+      </div>
+      <div class="content click-safe"><slot></slot></div>
+      <div
+        v-if="vertical === 'down'"
+        class="arrow-container"
+        :style="`width: ${elementWidth}px`"
+      >
+        <div class="arrow down click-safe"></div>
+      </div>
     </div>
-    <div class="content click-safe"><slot></slot></div>
-    <div
-      v-if="vertical === 'down'"
-      class="arrow-container"
-      :style="`width: ${elementWidth}px`"
-    >
-      <div class="arrow down click-safe"></div>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -60,6 +63,7 @@ export default Vue.extend({
     return {
       tooltipWidth: 0,
       tooltipHeight: 0,
+      unwatcher: null as null | (() => void),
     }
   },
   computed: {
@@ -84,8 +88,19 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.tooltipWidth = (this.$el as HTMLDivElement).clientWidth
-    this.tooltipHeight = (this.$el as HTMLDivElement).clientHeight
+    this.unwatcher = this.$watch('value', () => {
+      this.tooltipWidth = (this.$el as HTMLDivElement).clientWidth
+      this.tooltipHeight = (this.$el as HTMLDivElement).clientHeight
+
+      if (this.unwatcher) {
+        this.unwatcher()
+      }
+    })
+  },
+  beforeDestroy() {
+    if (this.unwatcher) {
+      this.unwatcher()
+    }
   },
 })
 </script>
@@ -94,18 +109,10 @@ export default Vue.extend({
 $tooltip-background: rgba($color-grey-3, 0.7);
 
 .tooltip {
-  z-index: -1;
   position: absolute;
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  transition: all 0.15s ease;
 
-  &.show {
-    z-index: 5;
-    opacity: 1;
-    transition: all 0.15s ease;
-  }
   &.left {
     align-items: flex-start;
   }
