@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     drawer: false,
     settingsPopup: false,
+    structureValue: '',
   },
   mutations: {
     OPEN_DRAWER(state) {
@@ -20,6 +21,12 @@ export default new Vuex.Store({
     },
     CLOSE_SETTINGS_POPUP(state) {
       state.settingsPopup = false
+    },
+    SET_STRUCTURE_VALUE(state, value) {
+      state.structureValue = value
+    },
+    CLEAR_STRUCTURE_VALUE(state) {
+      state.structureValue = ''
     },
   },
   actions: {},

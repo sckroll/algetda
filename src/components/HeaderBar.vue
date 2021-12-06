@@ -1,5 +1,5 @@
 <template>
-  <header class="header-bar">
+  <header class="header-bar" :class="{ landing }">
     <div class="left-side">
       <div class="icon-container" @click="openDrawer">
         <IconBase>
@@ -7,7 +7,7 @@
         </IconBase>
       </div>
       <Logo></Logo>
-      <div class="curr-algorithm"></div>
+      <div class="curr-structure">{{ currStructure }}</div>
     </div>
     <div class="right-side">
       <TooltipContainer arrow="up center">
@@ -64,6 +64,14 @@ export default Vue.extend({
     IconHome,
     IconGitHub,
   },
+  computed: {
+    landing(): boolean {
+      return this.$route.path === '/'
+    },
+    currStructure(): string {
+      return this.landing ? '' : this.$route.name?.split(' - ')[0] ?? ''
+    },
+  },
   methods: {
     openDrawer() {
       this.$store.commit('OPEN_DRAWER')
@@ -86,9 +94,6 @@ header.header-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba($color-grey-4, 0.7);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 2px 4px 1px rgba(black, 0.25);
 
   .left-side,
   .right-side {
@@ -96,6 +101,15 @@ header.header-bar {
     align-items: center;
     gap: 16px;
   }
+  &.landing {
+    background-color: rgba($color-grey-4, 0.7);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 4px 1px rgba(black, 0.25);
+  }
+}
+.curr-structure {
+  font-size: 1.5em;
+  font-weight: 300;
 }
 .icon-container {
   height: 32px;
