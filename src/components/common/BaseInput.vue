@@ -59,7 +59,7 @@ export default Vue.extend({
 .input-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
   font-weight: 500;
 
   &.vertical {
