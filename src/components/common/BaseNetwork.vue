@@ -17,7 +17,12 @@
       :offsetY="tooltipOffsetY"
     >
       <template v-if="isLink">
-        <BaseInput v-model="newValue" short @enter="addNode"></BaseInput>
+        <BaseInput
+          v-model="newValue"
+          placeholder="새 노드 값"
+          short
+          @enter="addNode"
+        ></BaseInput>
         <div
           class="icon-container"
           :class="{ disabled: newValue.length === 0 }"
