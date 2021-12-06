@@ -31,26 +31,27 @@ export default Vue.extend({
       lastNodeId: 0,
     }
   },
-  mounted() {
-    this.nodes = this.values.map((value, index) => {
-      const fx =
-        this.values.length > 1
-          ? ((window.innerWidth - 400 * 2) / (this.values.length - 1)) * index +
-            400
-          : window.innerWidth / 2
-      return {
-        id: index,
-        name: value,
-        fx,
-        fy: window.innerHeight / 2,
-        pinned: true,
-      }
-    })
-    this.links = this.values
-      .slice(0, this.values.length - 1)
-      .map((_, index) => ({ sid: index, tid: index + 1 }))
+  watch: {
+    values(val: string[]) {
+      this.nodes = val.map((value, index) => {
+        const fx =
+          val.length > 1
+            ? ((window.innerWidth - 400 * 2) / (val.length - 1)) * index + 400
+            : window.innerWidth / 2
+        return {
+          id: index,
+          name: value,
+          fx,
+          fy: window.innerHeight / 2,
+          pinned: true,
+        }
+      })
+      this.links = val
+        .slice(0, val.length - 1)
+        .map((_, index) => ({ sid: index, tid: index + 1 }))
 
-    this.lastNodeId = this.values.length - 1
+      this.lastNodeId = val.length - 1
+    },
   },
   methods: {
     addNode(value: string, { source, target, index: linkIndex }: LinkObject) {

@@ -15,10 +15,12 @@ export default Vue.extend({
   components: {
     BaseLinkedList,
   },
-  data() {
-    return {
-      values: ['1', '2', '3', '4', '5'],
-    }
+  computed: {
+    values(): string[] {
+      return JSON.parse(`[${this.$store.state.structureValue}]`).map(
+        (value: number) => value.toString(),
+      )
+    },
   },
   methods: {
     addNode(value: string, nextNodeIndex: number) {
