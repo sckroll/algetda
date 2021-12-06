@@ -66,10 +66,12 @@ a {
 }
 
 .fade-enter-active,
-.fade-leave-active,
+.fade-leave-active {
+  transition: opacity 0.15s ease;
+}
 .fade-drawer-enter-active,
 .fade-drawer-leave-active {
-  transition: opacity 0.15s ease;
+  transition: all 0.15s ease;
 }
 .fade-enter,
 .fade-leave-to {
