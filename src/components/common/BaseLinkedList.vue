@@ -34,10 +34,15 @@ export default Vue.extend({
   watch: {
     values(val: string[]) {
       this.nodes = val.map((value, index) => {
-        const fx =
-          val.length > 1
-            ? ((window.innerWidth - 400 * 2) / (val.length - 1)) * index + 400
-            : window.innerWidth / 2
+        const dx = 200
+
+        let fx
+        if (val.length > 1) {
+          fx = ((window.innerWidth - dx * 2) / (val.length - 1)) * index + dx
+        } else {
+          fx = window.innerWidth / 2
+        }
+
         return {
           id: index,
           name: value,
