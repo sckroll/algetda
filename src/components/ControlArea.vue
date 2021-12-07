@@ -2,9 +2,14 @@
   <section class="control-area">
     <div class="control-container">
       <div class="data-input">
-        <BaseInput v-model="structureValue" @enter="handleEnter">
-          {{ structureLabel }} 값
-        </BaseInput>
+        <TooltipContainer arrow="up center">
+          <template slot="element">
+            <BaseInput v-model="structureValue" @enter="handleEnter">
+              {{ structureLabel }} 값
+            </BaseInput>
+          </template>
+          <template slot="content">쉼표(,)로 값을 분리해주세요.</template>
+        </TooltipContainer>
       </div>
       <div class="data-options">
         <BaseToggleSwitch v-model="switchTest1">test1</BaseToggleSwitch>
@@ -16,11 +21,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import TooltipContainer from '@/components/common/TooltipContainer.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import BaseToggleSwitch from '@/components/common/BaseToggleSwitch.vue'
 
 export default Vue.extend({
   components: {
+    TooltipContainer,
     BaseInput,
     BaseToggleSwitch,
   },
