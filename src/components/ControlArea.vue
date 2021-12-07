@@ -31,9 +31,17 @@ export default Vue.extend({
       switchTest2: false,
     }
   },
+  watch: {
+    inputValue(val: string[]) {
+      this.structureValue = val.join()
+    },
+  },
   computed: {
     structureLabel(): string {
       return this.$route.name?.split(' - ')[1] ?? '자료 구조'
+    },
+    inputValue(): string[] {
+      return this.$store.state.structureValue
     },
   },
   mounted() {

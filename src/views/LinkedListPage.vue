@@ -17,20 +17,32 @@ export default Vue.extend({
   },
   computed: {
     values(): string[] {
-      return JSON.parse(`[${this.$store.state.structureValue}]`).map(
-        (value: number) => value.toString(),
-      )
+      return this.$store.state.structureValue
     },
   },
   methods: {
     addNode(value: string, nextNodeIndex: number) {
-      this.values.splice(nextNodeIndex, 0, value)
+      const added = [
+        ...this.values.slice(0, nextNodeIndex),
+        value,
+        ...this.values.slice(nextNodeIndex),
+      ]
+
+      this.$store.commit('SET_STRUCTURE_VALUE', added)
     },
     changeNode(value: string, index: number) {
-      this.values[index] = value
+      const changed = this.values.slice()
+      changed[index] = value
+
+      this.$store.commit('SET_STRUCTURE_VALUE', changed)
     },
     removeNode(index: number) {
-      this.values.splice(index, 1)
+      const removed = [
+        ...this.values.slice(0, index),
+        ...this.values.slice(index + 1),
+      ]
+
+      this.$store.commit('SET_STRUCTURE_VALUE', removed)
     },
   },
 })
