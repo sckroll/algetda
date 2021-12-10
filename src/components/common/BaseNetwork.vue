@@ -123,6 +123,14 @@ export default Vue.extend({
         })
       },
     },
+    structureValue() {
+      this.hideTooltip()
+    },
+  },
+  computed: {
+    structureValue(): string[] {
+      return this.$store.state.structureValue
+    },
   },
   mounted() {
     if (this.directed) {
@@ -209,20 +217,17 @@ export default Vue.extend({
       if (this.newValue.length === 0) return
 
       this.$emit('node-add', this.newValue, this.currLink)
-      this.hideTooltip()
     },
     changeNode() {
       if (!this.currNode || this.newValue === this.prevValue) return
 
       this.currNode.name = this.newValue
       this.$emit('node-change', this.newValue, this.currNode.index)
-      this.hideTooltip()
     },
     removeNode() {
       if (!this.currNode || this.nodes.length < 2) return
 
       this.$emit('node-remove', this.currNode.index, this.currNode.id)
-      this.hideTooltip()
     },
   },
 })
