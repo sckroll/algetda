@@ -97,11 +97,11 @@ export default Vue.extend({
   data() {
     return {
       options: {
-        nodeSize: 48,
+        nodeSize: 32,
         linkWidth: 4,
         nodeLabels: true,
         linkLabels: true,
-        fontSize: 20,
+        fontSize: 16,
         force: 4096,
       },
       tooltip: false,
@@ -160,7 +160,7 @@ export default Vue.extend({
       marker.setAttributeNS(null, 'orient', 'auto')
       marker.setAttributeNS(null, 'markerWidth', '4')
       marker.setAttributeNS(null, 'markerHeight', '4')
-      marker.setAttributeNS(null, 'refX', '10')
+      marker.setAttributeNS(null, 'refX', '8')
       marker.setAttributeNS(null, 'refY', '2')
       polygon.setAttributeNS(null, 'points', '0 0, 4 2, 0 4')
       polygon.setAttributeNS(null, 'fill', colors.colorSecondary)
