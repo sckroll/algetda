@@ -9,11 +9,7 @@
           :error="!!errorMessage"
         >
           <template slot="element">
-            <BaseInput
-              v-model="structureValue"
-              @enter="handleEnter"
-              @blur="handleEnter"
-            >
+            <BaseInput v-model="structureValue" @enter="handleEnter">
             </BaseInput>
           </template>
           <template slot="content">
@@ -68,8 +64,6 @@ export default Vue.extend({
   },
   methods: {
     handleEnter() {
-      // TODO: 노드를 추가/수정/삭제할 때 노드 위치가 원래대로 돌아가는 현상 해결
-
       // 유효성 검사
       this.checkValue()
       if (this.errorMessage) return

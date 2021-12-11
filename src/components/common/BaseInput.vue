@@ -8,7 +8,6 @@
     :value="value"
     @input="handleInput"
     @keypress="handleEnter"
-    @blur="handleBlur"
   />
 </template>
 
@@ -44,9 +43,6 @@ export default Vue.extend({
       if (key === 'Enter') {
         this.$emit('enter')
       }
-    },
-    handleBlur() {
-      this.$emit('blur')
     },
   },
 })
