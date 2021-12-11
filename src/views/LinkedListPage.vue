@@ -1,5 +1,5 @@
 <template>
-  <BaseLinkedList :values="values"></BaseLinkedList>
+  <BaseLinkedList></BaseLinkedList>
 </template>
 
 <script lang="ts">
@@ -9,11 +9,6 @@ import BaseLinkedList from '@/components/common/BaseLinkedList.vue'
 export default Vue.extend({
   components: {
     BaseLinkedList,
-  },
-  computed: {
-    values(): string[] {
-      return this.$store.state.structureValue
-    },
   },
 })
 </script>

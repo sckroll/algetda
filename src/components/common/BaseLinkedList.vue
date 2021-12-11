@@ -10,19 +10,13 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue'
+import Vue from 'vue'
 import BaseNetwork from '@/components/common/BaseNetwork.vue'
 import { NewNode, NewLink, NodeObject, LinkObject } from '@/network-graph.d'
 
 export default Vue.extend({
   components: {
     BaseNetwork,
-  },
-  props: {
-    values: {
-      type: Array as PropType<string[]>,
-      required: true,
-    },
   },
   data() {
     return {
@@ -32,13 +26,32 @@ export default Vue.extend({
     }
   },
   watch: {
-    values(val: string[]) {
-      this.nodes = val.map((value, index) => {
+    values(newValues: string[], oldValues: string[]) {
+      console.log(newValues, oldValues)
+
+      if (oldValues.length === 0 && newValues.length > oldValues.length) {
+        this.initNodes()
+      }
+    },
+  },
+  computed: {
+    values(): string[] {
+      return this.$store.state.structureValue
+    },
+  },
+  mounted() {
+    this.initNodes()
+  },
+  methods: {
+    initNodes() {
+      this.nodes = this.values.map((value, index) => {
         const dx = 200
 
         let fx
-        if (val.length > 1) {
-          fx = ((window.innerWidth - dx * 2) / (val.length - 1)) * index + dx
+        if (this.values.length > 1) {
+          fx =
+            ((window.innerWidth - dx * 2) / (this.values.length - 1)) * index +
+            dx
         } else {
           fx = window.innerWidth / 2
         }
@@ -51,14 +64,12 @@ export default Vue.extend({
           pinned: true,
         }
       })
-      this.links = val
-        .slice(0, val.length - 1)
+      this.links = this.values
+        .slice(0, this.values.length - 1)
         .map((_, index) => ({ sid: index, tid: index + 1 }))
 
-      this.lastNodeId = val.length - 1
+      this.lastNodeId = this.values.length - 1
     },
-  },
-  methods: {
     addNode(value: string, { source, target, index: linkIndex }: LinkObject) {
       // 1. 노드 추가
       const newNode = {
