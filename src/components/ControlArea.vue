@@ -3,19 +3,30 @@
     <div class="control-container">
       <div class="data-input">
         <div class="input-label">{{ structureLabel }} 값</div>
-        <TooltipContainer
-          arrow="up center"
-          :fixed="!!errorMessage"
-          :error="!!errorMessage"
-        >
-          <template slot="element">
-            <BaseInput v-model="structureValue" @enter="handleEnter">
-            </BaseInput>
-          </template>
-          <template slot="content">
-            {{ errorMessage || '쉼표(,)로 값을 분리해주세요.' }}
-          </template>
-        </TooltipContainer>
+        <div class="input-content">
+          <TooltipContainer
+            arrow="up center"
+            :fixed="!!errorMessage"
+            :error="!!errorMessage"
+          >
+            <template slot="element">
+              <BaseInput v-model="structureValue" @enter="handleConfirm">
+              </BaseInput>
+            </template>
+            <template slot="content">
+              {{ errorMessage || '쉼표(,)로 값을 분리해주세요.' }}
+            </template>
+          </TooltipContainer>
+          <div
+            class="icon-container"
+            :class="{ disabled: !isModifiable }"
+            @click="handleConfirm"
+          >
+            <IconBase>
+              <IconConfirm></IconConfirm>
+            </IconBase>
+          </div>
+        </div>
       </div>
       <div class="data-options">
         <BaseToggleSwitch v-model="switchTest1">test1</BaseToggleSwitch>
@@ -30,12 +41,16 @@ import Vue from 'vue'
 import TooltipContainer from '@/components/common/TooltipContainer.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import BaseToggleSwitch from '@/components/common/BaseToggleSwitch.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconConfirm from '@/components/icons/IconConfirm.vue'
 
 export default Vue.extend({
   components: {
     TooltipContainer,
     BaseInput,
     BaseToggleSwitch,
+    IconBase,
+    IconConfirm,
   },
   data() {
     return {
@@ -46,6 +61,11 @@ export default Vue.extend({
     }
   },
   watch: {
+    structureValue(val: string) {
+      if (val === this.inputValue.join()) {
+        this.errorMessage = ''
+      }
+    },
     inputValue(val: string[]) {
       this.structureValue = val.join()
     },
@@ -57,13 +77,21 @@ export default Vue.extend({
     inputValue(): string[] {
       return this.$store.state.structureValue
     },
+    isModifiable(): boolean {
+      return (
+        this.structureValue.length > 0 &&
+        this.structureValue !== this.inputValue.join()
+      )
+    },
   },
   mounted() {
     this.structureValue = '1,2,3,4,5'
     this.$store.commit('SET_STRUCTURE_VALUE', this.structureValue)
   },
   methods: {
-    handleEnter() {
+    handleConfirm() {
+      if (!this.isModifiable) return
+
       // 유효성 검사
       this.checkValue()
       if (this.errorMessage) return
@@ -112,7 +140,6 @@ section {
   height: 128px;
   display: flex;
   align-items: flex-end;
-  gap: 16px;
   padding: 16px;
   box-sizing: border-box;
   background-color: rgba($color-grey-4, 0.7);
@@ -130,6 +157,37 @@ section {
   align-items: center;
   gap: 16px;
   font-weight: 500;
+}
+.input-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.icon-container {
+  height: 32px;
+
+  svg {
+    cursor: pointer;
+
+    &:hover {
+      * {
+        fill: black;
+      }
+    }
+  }
+  &.disabled {
+    svg {
+      cursor: default;
+    }
+    * {
+      stroke: $color-grey-2;
+    }
+    &:hover {
+      * {
+        fill: transparent;
+      }
+    }
+  }
 }
 .data-options {
   display: flex;
