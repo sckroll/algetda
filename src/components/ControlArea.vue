@@ -9,7 +9,11 @@
           :error="!!errorMessage"
         >
           <template slot="element">
-            <BaseInput v-model="structureValue" @enter="handleEnter">
+            <BaseInput
+              v-model="structureValue"
+              @enter="handleEnter"
+              @blur="handleEnter"
+            >
             </BaseInput>
           </template>
           <template slot="content">
