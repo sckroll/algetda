@@ -27,7 +27,10 @@ export default Vue.extend({
   },
   watch: {
     values(newValues: string[], oldValues: string[]) {
-      console.log(newValues, oldValues)
+      if (this.modifiedByText) {
+        this.initNodes()
+        return
+      }
 
       if (oldValues.length === 0 && newValues.length > oldValues.length) {
         this.initNodes()
@@ -38,14 +41,14 @@ export default Vue.extend({
     values(): string[] {
       return this.$store.state.structureValue
     },
-  },
-  mounted() {
-    this.initNodes()
+    modifiedByText(): boolean {
+      return this.$store.state.modifiedByText
+    },
   },
   methods: {
     initNodes() {
       this.nodes = this.values.map((value, index) => {
-        const dx = 200
+        const dx = 400
 
         let fx
         if (this.values.length > 1) {
@@ -102,12 +105,14 @@ export default Vue.extend({
         value,
         ...this.values.slice(target.index),
       ]
+      this.$store.commit('SET_MODIFIED_BY_TEXT', false)
       this.$store.commit('SET_STRUCTURE_VALUE', added)
     },
     changeNode(value: string, index: number) {
       const changed = this.values.slice()
       changed[index] = value
 
+      this.$store.commit('SET_MODIFIED_BY_TEXT', false)
       this.$store.commit('SET_STRUCTURE_VALUE', changed)
     },
     removeNode(nodeIndex: number, nodeId: number) {
@@ -155,6 +160,7 @@ export default Vue.extend({
         ...this.values.slice(nodeIndex + 1),
       ]
 
+      this.$store.commit('SET_MODIFIED_BY_TEXT', false)
       this.$store.commit('SET_STRUCTURE_VALUE', removed)
     },
   },

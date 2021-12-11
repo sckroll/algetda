@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     drawer: false,
     settingsPopup: false,
+    modifiedByText: false,
     structureValue: [] as string[],
   },
   mutations: {
@@ -29,8 +30,8 @@ export default new Vuex.Store({
         state.structureValue = value
       }
     },
-    CLEAR_STRUCTURE_VALUE(state) {
-      state.structureValue = []
+    SET_MODIFIED_BY_TEXT(state, value: boolean) {
+      state.modifiedByText = value
     },
   },
   actions: {},

@@ -86,6 +86,8 @@ export default Vue.extend({
   },
   mounted() {
     this.structureValue = '1,2,3,4,5'
+
+    this.$store.commit('SET_MODIFIED_BY_TEXT', true)
     this.$store.commit('SET_STRUCTURE_VALUE', this.structureValue)
   },
   methods: {
@@ -96,6 +98,7 @@ export default Vue.extend({
       this.checkValue()
       if (this.errorMessage) return
 
+      this.$store.commit('SET_MODIFIED_BY_TEXT', true)
       this.$store.commit('SET_STRUCTURE_VALUE', this.structureValue)
     },
     checkValue() {
