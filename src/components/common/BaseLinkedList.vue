@@ -85,11 +85,19 @@ export default Vue.extend({
       // 3. 기존 간선 삭제
       this.links.splice(linkIndex, 1)
 
-      // 4. 부모 컴포넌트로 이벤트 전달
-      this.$emit('node-add', value, target.index)
+      // 4. 값이 추가된 결과물을 스토어에 저장
+      const added = [
+        ...this.values.slice(0, target.index),
+        value,
+        ...this.values.slice(target.index),
+      ]
+      this.$store.commit('SET_STRUCTURE_VALUE', added)
     },
     changeNode(value: string, index: number) {
-      this.$emit('node-change', value, index)
+      const changed = this.values.slice()
+      changed[index] = value
+
+      this.$store.commit('SET_STRUCTURE_VALUE', changed)
     },
     removeNode(nodeIndex: number, nodeId: number) {
       // 1. 노드의 진입 간선과 진출 간선을 검색
@@ -130,8 +138,13 @@ export default Vue.extend({
       // 4. 노드 삭제
       this.nodes.splice(nodeIndex, 1)
 
-      // 5. 부모 컴포넌트로 이벤트 전달
-      this.$emit('node-remove', nodeIndex)
+      // 5. 삭제된 값이 적용된 결과물을 스토어에 저장
+      const removed = [
+        ...this.values.slice(0, nodeIndex),
+        ...this.values.slice(nodeIndex + 1),
+      ]
+
+      this.$store.commit('SET_STRUCTURE_VALUE', removed)
     },
   },
 })
