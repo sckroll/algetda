@@ -1,17 +1,14 @@
 <template>
-  <label class="input-container click-safe" :class="{ vertical }">
-    <slot></slot>
-    <input
-      :type="type"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :class="{ disabled, short }"
-      class="click-safe"
-      :value="value"
-      @input="handleInput"
-      @keypress="handleEnter"
-    />
-  </label>
+  <input
+    :type="type"
+    :placeholder="placeholder"
+    :disabled="disabled"
+    :class="{ disabled, short }"
+    class="click-safe"
+    :value="value"
+    @input="handleInput"
+    @keypress="handleEnter"
+  />
 </template>
 
 <script lang="ts">
@@ -30,10 +27,6 @@ export default Vue.extend({
       type: String,
     },
     disabled: {
-      type: Boolean,
-      default: false,
-    },
-    vertical: {
       type: Boolean,
       default: false,
     },
@@ -56,17 +49,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.input-container {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-weight: 500;
-
-  &.vertical {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
 input {
   outline: none;
   padding: 4px 8px;

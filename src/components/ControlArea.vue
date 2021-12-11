@@ -2,10 +2,10 @@
   <section class="control-area">
     <div class="control-container">
       <div class="data-input">
+        <div class="input-label">{{ structureLabel }} 값</div>
         <TooltipContainer arrow="up center">
           <template slot="element">
             <BaseInput v-model="structureValue" @enter="handleEnter">
-              {{ structureLabel }} 값
             </BaseInput>
           </template>
           <template slot="content">쉼표(,)로 값을 분리해주세요.</template>
@@ -57,13 +57,23 @@ export default Vue.extend({
   },
   methods: {
     handleEnter() {
+      // TODO: 노드를 추가/수정/삭제할 때 노드 위치가 원래대로 돌아가는 현상 해결
       // 유효성 검사
-      const regex = /^([0-9],)*[0-9]$/g
-      if (!regex.test(this.structureValue)) {
-        return
+      if (!this.isValid()) {
+        // TODO: 유효성 검사 실패 이유를 툴팁으로 나타내기
       }
 
+      // 1. 맨 앞이나 맨 뒤에 쉼표가 있으면 안 됨
+
+      // 2. 쉼표를 연속해서 두 번 이상 입력하면 안 됨
+
+      // 3. 공백 데이터를 입력하면 안됨
+
       this.$store.commit('SET_STRUCTURE_VALUE', this.structureValue)
+    },
+    isValid(): boolean {
+      const regex = /^([0-9],)*[0-9]$/g
+      return regex.test(this.structureValue)
     },
   },
 })
@@ -90,6 +100,12 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.data-input {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-weight: 500;
 }
 .data-options {
   display: flex;
