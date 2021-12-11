@@ -79,7 +79,7 @@ export default Vue.extend({
         id: ++this.lastNodeId,
         name: value,
         fx: (source.x + target.x) / 2,
-        fy: source.y - Math.abs(source.x - target.x) / 2,
+        fy: (source.y + target.y) / 2,
         pinned: true,
       }
 
