@@ -8,6 +8,7 @@ export default new Vuex.Store({
     drawer: false,
     settingsPopup: false,
     modifiedByText: false,
+    bidirectional: false,
     structureValue: [] as string[],
   },
   mutations: {
@@ -23,15 +24,18 @@ export default new Vuex.Store({
     CLOSE_SETTINGS_POPUP(state) {
       state.settingsPopup = false
     },
+    SET_MODIFIED_BY_TEXT(state, value: boolean) {
+      state.modifiedByText = value
+    },
+    SET_BIDIRECTIONAL(state, value: boolean) {
+      state.bidirectional = value
+    },
     SET_STRUCTURE_VALUE(state, value: string | string[]) {
       if (typeof value === 'string') {
         state.structureValue = value.split(',')
       } else {
         state.structureValue = value
       }
-    },
-    SET_MODIFIED_BY_TEXT(state, value: boolean) {
-      state.modifiedByText = value
     },
   },
   actions: {},

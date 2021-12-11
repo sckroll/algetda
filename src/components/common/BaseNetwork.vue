@@ -118,57 +118,87 @@ export default Vue.extend({
     links: {
       deep: true,
       handler() {
+        if (!this.directed) return
+
         this.$el.querySelectorAll('path.link').forEach(link => {
           link.setAttributeNS(null, 'marker-end', 'url(#arrow-head)')
+          if (this.bidirectional) {
+            link.setAttributeNS(null, 'marker-start', 'url(#arrow-tail)')
+          }
         })
       },
     },
     structureValue() {
       this.hideTooltip()
     },
+    bidirectional(val: boolean) {
+      this.$el.querySelectorAll('path.link').forEach(link => {
+        if (val) {
+          link.setAttributeNS(null, 'marker-start', 'url(#arrow-tail)')
+        } else {
+          link.removeAttributeNS(null, 'marker-start')
+        }
+      })
+    },
   },
   computed: {
     structureValue(): string[] {
       return this.$store.state.structureValue
     },
+    bidirectional(): boolean {
+      return this.$store.state.bidirectional
+    },
   },
   mounted() {
-    if (this.directed) {
-      this.addArrow()
-    }
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
+    const headMarker = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'marker',
+    )
+    const tailMarker = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'marker',
+    )
+    const headPolygon = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'polygon',
+    )
+    const tailPolygon = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'polygon',
+    )
+    const linksGroup = this.$el.querySelector('#l-links')
+
+    // #arrow-head
+    headMarker.setAttributeNS(null, 'id', 'arrow-head')
+    headMarker.setAttributeNS(null, 'orient', 'auto')
+    headMarker.setAttributeNS(null, 'markerWidth', '4')
+    headMarker.setAttributeNS(null, 'markerHeight', '4')
+    headMarker.setAttributeNS(null, 'refX', '8')
+    headMarker.setAttributeNS(null, 'refY', '2')
+    headPolygon.setAttributeNS(null, 'points', '0 0, 4 2, 0 4')
+    headPolygon.setAttributeNS(null, 'fill', colors.colorSecondary)
+
+    // #arrow-tail
+    tailMarker.setAttributeNS(null, 'id', 'arrow-tail')
+    tailMarker.setAttributeNS(null, 'orient', 'auto')
+    tailMarker.setAttributeNS(null, 'markerWidth', '4')
+    tailMarker.setAttributeNS(null, 'markerHeight', '4')
+    tailMarker.setAttributeNS(null, 'refX', '-4')
+    tailMarker.setAttributeNS(null, 'refY', '2')
+    tailPolygon.setAttributeNS(null, 'points', '4 4, 0 2, 4 0')
+    tailPolygon.setAttributeNS(null, 'fill', colors.colorSecondary)
+
+    headMarker.appendChild(headPolygon)
+    tailMarker.appendChild(tailPolygon)
+    defs.appendChild(headMarker)
+    defs.appendChild(tailMarker)
+    linksGroup?.prepend(defs)
   },
   beforeDestroy() {
     window.removeEventListener('click', this.toggleClickHandler)
   },
   methods: {
-    addArrow() {
-      const defs = document.createElementNS(
-        'http://www.w3.org/2000/svg',
-        'defs',
-      )
-      const marker = document.createElementNS(
-        'http://www.w3.org/2000/svg',
-        'marker',
-      )
-      const polygon = document.createElementNS(
-        'http://www.w3.org/2000/svg',
-        'polygon',
-      )
-      const linksGroup = this.$el.querySelector('#l-links')
-
-      marker.setAttributeNS(null, 'id', 'arrow-head')
-      marker.setAttributeNS(null, 'orient', 'auto')
-      marker.setAttributeNS(null, 'markerWidth', '4')
-      marker.setAttributeNS(null, 'markerHeight', '4')
-      marker.setAttributeNS(null, 'refX', '8')
-      marker.setAttributeNS(null, 'refY', '2')
-      polygon.setAttributeNS(null, 'points', '0 0, 4 2, 0 4')
-      polygon.setAttributeNS(null, 'fill', colors.colorSecondary)
-
-      marker.appendChild(polygon)
-      defs.appendChild(marker)
-      linksGroup?.prepend(defs)
-    },
     clickNode(e: PointerEvent, node: NodeObject) {
       this.isLink = false
 

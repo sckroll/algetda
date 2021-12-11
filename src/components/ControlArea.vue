@@ -29,8 +29,7 @@
         </div>
       </div>
       <div class="data-options">
-        <BaseToggleSwitch v-model="switchTest1">test1</BaseToggleSwitch>
-        <BaseToggleSwitch v-model="switchTest2">test2</BaseToggleSwitch>
+        <BaseToggleSwitch v-model="bidirectional">양방향</BaseToggleSwitch>
       </div>
     </div>
   </section>
@@ -55,8 +54,7 @@ export default Vue.extend({
   data() {
     return {
       structureValue: '',
-      switchTest1: false,
-      switchTest2: false,
+      bidirectional: false,
       errorMessage: '',
     }
   },
@@ -68,6 +66,9 @@ export default Vue.extend({
     },
     inputValue(val: string[]) {
       this.structureValue = val.join()
+    },
+    bidirectional(val: boolean) {
+      this.$store.commit('SET_BIDIRECTIONAL', val)
     },
   },
   computed: {
