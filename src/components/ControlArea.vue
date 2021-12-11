@@ -3,12 +3,18 @@
     <div class="control-container">
       <div class="data-input">
         <div class="input-label">{{ structureLabel }} 값</div>
-        <TooltipContainer arrow="up center">
+        <TooltipContainer
+          arrow="up center"
+          :fixed="!!errorMessage"
+          :error="!!errorMessage"
+        >
           <template slot="element">
             <BaseInput v-model="structureValue" @enter="handleEnter">
             </BaseInput>
           </template>
-          <template slot="content">쉼표(,)로 값을 분리해주세요.</template>
+          <template slot="content">
+            {{ errorMessage || '쉼표(,)로 값을 분리해주세요.' }}
+          </template>
         </TooltipContainer>
       </div>
       <div class="data-options">
@@ -36,6 +42,7 @@ export default Vue.extend({
       structureValue: '',
       switchTest1: false,
       switchTest2: false,
+      errorMessage: '',
     }
   },
   watch: {
@@ -58,22 +65,41 @@ export default Vue.extend({
   methods: {
     handleEnter() {
       // TODO: 노드를 추가/수정/삭제할 때 노드 위치가 원래대로 돌아가는 현상 해결
+
       // 유효성 검사
-      if (!this.isValid()) {
-        // TODO: 유효성 검사 실패 이유를 툴팁으로 나타내기
-      }
-
-      // 1. 맨 앞이나 맨 뒤에 쉼표가 있으면 안 됨
-
-      // 2. 쉼표를 연속해서 두 번 이상 입력하면 안 됨
-
-      // 3. 공백 데이터를 입력하면 안됨
+      this.checkValue()
+      if (this.errorMessage) return
 
       this.$store.commit('SET_STRUCTURE_VALUE', this.structureValue)
     },
-    isValid(): boolean {
-      const regex = /^([0-9],)*[0-9]$/g
-      return regex.test(this.structureValue)
+    checkValue() {
+      const value = this.structureValue
+
+      // 1. 값을 입력했는가?
+      if (value.length === 0) {
+        this.errorMessage = '값을 입력해주세요.'
+        return
+      }
+
+      // 2. 맨 앞이나 맨 뒤에 쉼표가 있는가?
+      if (value[0] === ',' || value[value.length - 1] === ',') {
+        this.errorMessage = '쉼표로 시작하거나 끝날 수 없습니다.'
+        return
+      }
+
+      // 3. 쉼표를 연속해서 두 번 이상 입력했는가?
+      if (value.includes(',,')) {
+        this.errorMessage = '쉼표를 연속해서 입력할 수 없습니다.'
+        return
+      }
+
+      // 4. 공백 데이터를 입력했는가?
+      if (value.includes(' ')) {
+        this.errorMessage = '공백이 포함되어 있습니다.'
+        return
+      }
+
+      this.errorMessage = ''
     },
   },
 })
