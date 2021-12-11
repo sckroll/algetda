@@ -3,7 +3,7 @@
     <div
       v-if="value"
       class="tooltip"
-      :class="{ [horizontal]: horizontal }"
+      :class="{ [horizontal]: horizontal, error }"
       :style="offset"
     >
       <div
@@ -31,6 +31,10 @@ import Vue from 'vue'
 export default Vue.extend({
   props: {
     value: {
+      type: Boolean,
+      default: false,
+    },
+    error: {
       type: Boolean,
       default: false,
     },
@@ -107,6 +111,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 $tooltip-background: rgba($color-grey-3, 0.7);
+$tooltip-error: rgba($color-error, 0.7);
 
 .tooltip {
   position: absolute;
@@ -121,6 +126,14 @@ $tooltip-background: rgba($color-grey-3, 0.7);
   }
   &.right {
     align-items: flex-end;
+  }
+  &.error {
+    .content {
+      background-color: $tooltip-error;
+    }
+    .arrow {
+      background-color: $tooltip-error;
+    }
   }
 }
 .content {

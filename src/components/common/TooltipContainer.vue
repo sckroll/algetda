@@ -7,21 +7,15 @@
       :horizontal="horizontal"
       :element-width="elementWidth"
       :element-height="elementHeight"
+      :error="error"
     >
       <slot name="content"></slot>
     </BaseTooltip>
 
     <div
-      v-if="toggle"
-      class="tooltip-target toggle"
-      @click.stop="toggleTooltip"
-      ref="tooltip"
-    >
-      <slot name="element"></slot>
-    </div>
-    <div
-      v-else
       class="tooltip-target"
+      :class="{ toggle }"
+      @click.stop="toggleTooltip"
       @mouseover="showTooltip"
       @mouseleave="hideTooltip"
       ref="tooltip"
@@ -36,6 +30,7 @@
       :horizontal="horizontal"
       :element-width="elementWidth"
       :element-height="elementHeight"
+      :error="error"
     >
       <slot name="content"></slot>
     </BaseTooltip>
@@ -70,6 +65,14 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    fixed: {
+      type: Boolean,
+      default: false,
+    },
+    error: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -77,6 +80,14 @@ export default Vue.extend({
       elementWidth: 0,
       elementHeight: 0,
     }
+  },
+  watch: {
+    fixed: {
+      immediate: true,
+      handler(val) {
+        this.tooltip = val
+      },
+    },
   },
   computed: {
     vertical(): string {
@@ -97,12 +108,18 @@ export default Vue.extend({
   },
   methods: {
     showTooltip() {
+      if (this.fixed || this.toggle) return
+
       this.tooltip = true
     },
     hideTooltip() {
+      if (this.fixed || this.toggle) return
+
       this.tooltip = false
     },
     toggleTooltip() {
+      if (this.fixed || !this.toggle) return
+
       this.tooltip = !this.tooltip
       if (this.tooltip) {
         window.addEventListener('click', this.toggleClickHandler)
