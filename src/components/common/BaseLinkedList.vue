@@ -59,14 +59,23 @@ export default Vue.extend({
           fx = window.innerWidth / 2
         }
 
+        let _cssClass
+        if (index === 0) {
+          _cssClass = 'head'
+        } else if (index === this.values.length - 1) {
+          _cssClass = 'tail'
+        }
+
         return {
           id: index,
           name: value,
           fx,
           fy: window.innerHeight / 2,
           pinned: true,
+          _cssClass,
         }
       })
+
       this.links = this.values
         .slice(0, this.values.length - 1)
         .map((_, index) => ({ sid: index, tid: index + 1 }))
@@ -162,6 +171,10 @@ export default Vue.extend({
 
       this.$store.commit('SET_MODIFIED_BY_TEXT', false)
       this.$store.commit('SET_STRUCTURE_VALUE', removed)
+
+      // 6. 머리 노드 혹은 꼬리 노드 업데이트
+      ;(this.nodes[this.nodes.length - 1] as NewNode)._cssClass = 'tail'
+      ;(this.nodes[0] as NewNode)._cssClass = 'head'
     },
   },
 })

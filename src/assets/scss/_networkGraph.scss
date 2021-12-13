@@ -8,6 +8,22 @@
     fill: $color-secondary;
     transition: fill 0.15s ease;
   }
+  &.head {
+    fill: $color-head-1;
+    stroke: $color-head-2;
+
+    &:hover {
+      fill: $color-head-2;
+    }
+  }
+  &.tail {
+    fill: $color-tail-1;
+    stroke: $color-tail-2;
+
+    &:hover {
+      fill: $color-tail-2;
+    }
+  }
 }
 
 .link {
