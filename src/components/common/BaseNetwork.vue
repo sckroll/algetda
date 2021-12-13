@@ -16,44 +16,59 @@
       :offsetX="tooltipOffsetX"
       :offsetY="tooltipOffsetY"
     >
-      <template v-if="isLink">
-        <BaseInput
-          v-model="newValue"
-          placeholder="새 노드 값"
-          short
-          @enter="addNode"
-        ></BaseInput>
-        <div
-          class="icon-container"
-          :class="{ disabled: newValue.length === 0 }"
-          @click="addNode"
-        >
-          <IconBase>
-            <IconAdd></IconAdd>
-          </IconBase>
+      <div class="node-tooltip click-safe">
+        <div class="actions click-safe">
+          <template v-if="isLink">
+            <BaseInput
+              v-model="newValue"
+              placeholder="새 노드 값"
+              short
+              @enter="addNode"
+            ></BaseInput>
+            <div
+              class="icon-container"
+              :class="{ disabled: newValue.length === 0 }"
+              @click="addNode"
+            >
+              <IconBase>
+                <IconAdd></IconAdd>
+              </IconBase>
+            </div>
+          </template>
+          <template v-else>
+            <BaseInput v-model="newValue" short @enter="changeNode"></BaseInput>
+            <div
+              class="icon-container"
+              :class="{
+                disabled: newValue.length === 0 || newValue === prevValue,
+              }"
+              @click="changeNode"
+            >
+              <IconBase>
+                <IconConfirm></IconConfirm>
+              </IconBase>
+            </div>
+            <div
+              class="icon-container"
+              :class="{ disabled: nodes.length < 2 }"
+              @click="removeNode"
+            >
+              <IconBase>
+                <IconRemove></IconRemove>
+              </IconBase>
+            </div>
+          </template>
         </div>
-      </template>
-      <template v-else>
-        <BaseInput v-model="newValue" short @enter="changeNode"></BaseInput>
-        <div
-          class="icon-container"
-          :class="{ disabled: newValue.length === 0 || newValue === prevValue }"
-          @click="changeNode"
-        >
-          <IconBase>
-            <IconConfirm></IconConfirm>
-          </IconBase>
+        <div v-if="!isLink && currNode" class="info click-safe">
+          인덱스: {{ currNode.index }}
+          <template v-if="currNode.index === 0">
+            {{ nodes.length === 1 ? '(Head & Tail)' : '(Head)' }}
+          </template>
+          <template v-else-if="currNode.index === nodes.length - 1">
+            (Tail)
+          </template>
         </div>
-        <div
-          class="icon-container"
-          :class="{ disabled: nodes.length < 2 }"
-          @click="removeNode"
-        >
-          <IconBase>
-            <IconRemove></IconRemove>
-          </IconBase>
-        </div>
-      </template>
+      </div>
     </BaseTooltip>
   </div>
 </template>
@@ -293,6 +308,16 @@ svg {
     * {
       fill: black;
     }
+  }
+}
+.node-tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .actions {
+    display: flex;
+    gap: 8px;
   }
 }
 </style>
