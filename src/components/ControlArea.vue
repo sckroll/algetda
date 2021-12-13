@@ -26,6 +26,11 @@
               <IconConfirm></IconConfirm>
             </IconBase>
           </div>
+          <div class="icon-container" @click="shuffleNodes">
+            <IconBase>
+              <IconRandom></IconRandom>
+            </IconBase>
+          </div>
         </div>
       </div>
       <div class="data-options">
@@ -42,6 +47,7 @@ import BaseInput from '@/components/common/BaseInput.vue'
 import BaseToggleSwitch from '@/components/common/BaseToggleSwitch.vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconConfirm from '@/components/icons/IconConfirm.vue'
+import IconRandom from '@/components/icons/IconRandom.vue'
 
 export default Vue.extend({
   components: {
@@ -50,6 +56,7 @@ export default Vue.extend({
     BaseToggleSwitch,
     IconBase,
     IconConfirm,
+    IconRandom,
   },
   data() {
     return {
@@ -130,6 +137,16 @@ export default Vue.extend({
       }
 
       this.errorMessage = ''
+    },
+    shuffleNodes() {
+      const nodeCount = Math.floor(Math.random() * 5) + 4
+      const shuffled = [] as number[]
+      for (let i = 0; i < nodeCount; i++) {
+        shuffled.push(Math.floor(Math.random() * 10))
+      }
+
+      this.$store.commit('SET_MODIFIED_BY_TEXT', true)
+      this.$store.commit('SET_STRUCTURE_VALUE', shuffled.join(','))
     },
   },
 })
