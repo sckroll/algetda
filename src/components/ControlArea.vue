@@ -17,20 +17,30 @@
               {{ errorMessage || '쉼표(,)로 값을 분리해주세요.' }}
             </template>
           </TooltipContainer>
-          <div
-            class="icon-container"
-            :class="{ disabled: !isModifiable }"
-            @click="handleConfirm"
-          >
-            <IconBase>
-              <IconConfirm></IconConfirm>
-            </IconBase>
-          </div>
-          <div class="icon-container" @click="shuffleNodes">
-            <IconBase>
-              <IconRandom></IconRandom>
-            </IconBase>
-          </div>
+          <TooltipContainer arrow="up center">
+            <template slot="element">
+              <div
+                class="icon-container"
+                :class="{ disabled: !isModifiable }"
+                @click="handleConfirm"
+              >
+                <IconBase>
+                  <IconConfirm></IconConfirm>
+                </IconBase>
+              </div>
+            </template>
+            <template slot="content">입력한 값으로 초기화</template>
+          </TooltipContainer>
+          <TooltipContainer arrow="up center">
+            <template slot="element">
+              <div class="icon-container" @click="shuffleNodes">
+                <IconBase>
+                  <IconRandom></IconRandom>
+                </IconBase>
+              </div>
+            </template>
+            <template slot="content">랜덤 값으로 초기화</template>
+          </TooltipContainer>
         </div>
       </div>
       <div class="data-options">
