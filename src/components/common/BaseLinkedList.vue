@@ -23,6 +23,7 @@ export default Vue.extend({
       nodes: [] as (NewNode | NodeObject)[],
       links: [] as (NewLink | LinkObject)[],
       lastNodeId: 0,
+      intervalSpeed: 100,
     }
   },
   watch: {
@@ -47,40 +48,50 @@ export default Vue.extend({
   },
   methods: {
     initNodes() {
-      this.nodes = this.values.map((value, index) => {
-        const dx = 400
+      const dx = 400
+      const maxLength = this.values.length
 
-        let fx
-        if (this.values.length > 1) {
-          fx =
-            ((window.innerWidth - dx * 2) / (this.values.length - 1)) * index +
-            dx
-        } else {
-          fx = window.innerWidth / 2
-        }
+      this.nodes = []
+      this.links = []
+      this.lastNodeId = this.values.length - 1
 
-        let _cssClass
-        if (index === 0) {
-          _cssClass = 'head'
-        } else if (index === this.values.length - 1) {
-          _cssClass = 'tail'
-        }
+      // 머리 노드 추가
+      this.nodes.push({
+        id: 0,
+        name: this.values[0],
+        fx: dx,
+        fy: window.innerHeight / 2,
+        pinned: true,
+        _cssClass: 'head',
+      })
 
-        return {
-          id: index,
-          name: value,
+      let i = 1
+      const intervalId = setInterval(() => {
+        const fx = ((window.innerWidth - dx * 2) / (maxLength - 1)) * i + dx
+
+        // 노드 추가
+        this.nodes.push({
+          id: i,
+          name: this.values[i],
           fx,
           fy: window.innerHeight / 2,
           pinned: true,
-          _cssClass,
+          _cssClass: i === maxLength - 1 ? 'tail' : '',
+        })
+
+        // 간선 추가
+        this.links.push({
+          sid: i - 1,
+          tid: i,
+        })
+
+        // 노드와 간선을 전부 추가하면 인터벌 종료
+        if (i < maxLength - 1) {
+          i += 1
+        } else {
+          clearInterval(intervalId)
         }
-      })
-
-      this.links = this.values
-        .slice(0, this.values.length - 1)
-        .map((_, index) => ({ sid: index, tid: index + 1 }))
-
-      this.lastNodeId = this.values.length - 1
+      }, this.intervalSpeed)
     },
     addNode(value: string, { source, target, index: linkIndex }: LinkObject) {
       // 1. 노드 추가
