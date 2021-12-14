@@ -92,13 +92,11 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.unwatcher = this.$watch('value', () => {
+    this.unwatcher = this.$watch('value', val => {
+      if (!val) return
+
       this.tooltipWidth = (this.$el as HTMLDivElement).clientWidth
       this.tooltipHeight = (this.$el as HTMLDivElement).clientHeight
-
-      if (this.unwatcher) {
-        this.unwatcher()
-      }
     })
   },
   beforeDestroy() {

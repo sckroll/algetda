@@ -217,26 +217,36 @@ export default Vue.extend({
     clickNode(e: PointerEvent, node: NodeObject) {
       this.isLink = false
 
-      this.currNode = node
-      this.prevValue = node.name
-      this.newValue = node.name
+      if (this.tooltip) {
+        this.hideTooltip()
+      }
+      this.$nextTick(() => {
+        this.currNode = node
+        this.prevValue = node.name
+        this.newValue = node.name
 
-      this.tooltipOffsetX = e.clientX
-      this.tooltipOffsetY = e.clientY
+        this.tooltipOffsetX = e.clientX
+        this.tooltipOffsetY = e.clientY
 
-      this.showTooltip()
+        this.showTooltip()
+      })
     },
     clickLink(e: PointerEvent, link: LinkObject) {
       this.isLink = true
 
-      this.currLink = link
-      this.prevValue = ''
-      this.newValue = ''
+      if (this.tooltip) {
+        this.hideTooltip()
+      }
+      this.$nextTick(() => {
+        this.currLink = link
+        this.prevValue = ''
+        this.newValue = ''
 
-      this.tooltipOffsetX = e.clientX
-      this.tooltipOffsetY = e.clientY
+        this.tooltipOffsetX = e.clientX
+        this.tooltipOffsetY = e.clientY
 
-      this.showTooltip()
+        this.showTooltip()
+      })
     },
     showTooltip() {
       this.tooltip = true
