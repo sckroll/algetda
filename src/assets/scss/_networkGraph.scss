@@ -35,7 +35,6 @@
     }
   }
 }
-
 .link {
   stroke: $color-secondary;
   animation: fade-in 0.2s;
@@ -46,7 +45,6 @@
     transition: stroke 0.15s ease;
   }
 }
-
 .node-label {
   transform: translateX(-12px) translateY(24px);
   paint-order: stroke;

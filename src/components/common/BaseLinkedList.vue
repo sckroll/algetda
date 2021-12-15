@@ -22,19 +22,22 @@ export default Vue.extend({
     return {
       nodes: [] as (NewNode | NodeObject)[],
       links: [] as (NewLink | LinkObject)[],
+      queue: [] as string[][],
       lastNodeId: 0,
       intervalSpeed: 100,
+      intervalId: -1,
+      currPointer: 0,
     }
   },
   watch: {
     values(newValues: string[], oldValues: string[]) {
       if (this.modifiedByText) {
-        this.initNodes()
+        this.initQueue()
         return
       }
 
       if (oldValues.length === 0 && newValues.length > oldValues.length) {
-        this.initNodes()
+        this.initQueue()
       }
     },
   },
@@ -47,51 +50,72 @@ export default Vue.extend({
     },
   },
   methods: {
-    initNodes() {
-      const dx = 400
-      const maxLength = this.values.length
+    initQueue() {
+      this.pause()
 
-      this.nodes = []
-      this.links = []
-      this.lastNodeId = this.values.length - 1
+      this.queue = []
+      this.currPointer = 0
+      this.queue.push(['init'])
+      this.values.forEach(value => this.queue.push(['insert', value]))
+      this.play()
+    },
+    play() {
+      this.intervalId = setInterval(() => {
+        const [action, value] = this.queue[this.currPointer]
 
-      // 머리 노드 추가
-      this.nodes.push({
-        id: 0,
-        name: this.values[0],
-        fx: dx,
-        fy: window.innerHeight / 2,
-        pinned: true,
-        _cssClass: 'head',
-      })
+        if (action === 'init') {
+          this.nodes = []
+          this.links = []
+          this.lastNodeId = 0
+        } else if (action === 'insert') {
+          const dx = 400
+          const maxLength = this.values.length
 
-      let i = 1
-      const intervalId = setInterval(() => {
-        const fx = ((window.innerWidth - dx * 2) / (maxLength - 1)) * i + dx
+          let fx, _cssClass
+          if (this.lastNodeId === 0) {
+            fx = dx
+            _cssClass = 'head'
+          } else {
+            fx =
+              ((window.innerWidth - dx * 2) / (maxLength - 1)) *
+                this.lastNodeId +
+              dx
 
-        // 노드 추가
-        this.nodes.push({
-          id: i,
-          name: this.values[i],
-          fx,
-          fy: window.innerHeight / 2,
-          pinned: true,
-          _cssClass: i === maxLength - 1 ? 'tail' : '',
-        })
+            if (this.lastNodeId === maxLength - 1) {
+              _cssClass = 'tail'
+            }
+          }
 
-        // 간선 추가
-        this.links.push({
-          sid: i - 1,
-          tid: i,
-        })
+          // 노드 추가
+          this.nodes.push({
+            id: this.lastNodeId,
+            name: value,
+            fx,
+            fy: window.innerHeight / 2,
+            pinned: true,
+            _cssClass,
+          })
 
-        // 노드와 간선을 전부 추가하면 인터벌 종료
-        if (i < maxLength - 1) {
-          i += 1
+          // 간선 추가
+          if (this.lastNodeId > 0) {
+            this.links.push({
+              sid: this.lastNodeId - 1,
+              tid: this.lastNodeId,
+            })
+          }
+
+          this.lastNodeId += 1
+        }
+
+        if (this.currPointer < this.queue.length - 1) {
+          this.currPointer += 1
         } else {
-          clearInterval(intervalId)
+          this.pause()
         }
       }, this.intervalSpeed)
+    },
+    pause() {
+      clearInterval(this.intervalId)
     },
     addNode(value: string, { source, target, index: linkIndex }: LinkObject) {
       // 1. 노드 추가
