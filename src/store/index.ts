@@ -31,11 +31,17 @@ export default new Vuex.Store({
       state.bidirectional = value
     },
     SET_STRUCTURE_VALUE(state, value: string | string[]) {
+      let linkedListValue
+
       if (typeof value === 'string') {
         state.structureValue = value.split(',')
+        linkedListValue = value
       } else {
         state.structureValue = value
+        linkedListValue = value.join(',')
       }
+
+      localStorage.setItem('algetdaLinkedList', linkedListValue)
     },
   },
   actions: {},
