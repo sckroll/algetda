@@ -9,6 +9,7 @@ export default new Vuex.Store({
     settingsPopup: false,
     modifiedByText: false,
     bidirectional: false,
+    traversingQueue: false,
     structureValue: [] as string[],
   },
   mutations: {
@@ -42,6 +43,12 @@ export default new Vuex.Store({
       }
 
       localStorage.setItem('algetdaLinkedList', linkedListValue)
+    },
+    START_TRAVERSING_QUEUE(state) {
+      state.traversingQueue = true
+    },
+    STOP_TRAVERSING_QUEUE(state) {
+      state.traversingQueue = false
     },
   },
   actions: {},

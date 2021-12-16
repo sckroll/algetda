@@ -43,8 +43,65 @@
           </TooltipContainer>
         </div>
       </div>
-      <div class="data-options">
-        <BaseToggleSwitch v-model="bidirectional">양방향</BaseToggleSwitch>
+      <div class="node-controller">
+        <div class="node-options">
+          <BaseToggleSwitch v-model="bidirectional">양방향</BaseToggleSwitch>
+        </div>
+        <div class="player">
+          <TooltipContainer arrow="up center">
+            <template slot="element">
+              <div class="icon-container">
+                <IconBase>
+                  <IconStepFirst></IconStepFirst>
+                </IconBase>
+              </div>
+            </template>
+            <template slot="content">처음 순서로 이동</template>
+          </TooltipContainer>
+          <TooltipContainer arrow="up center">
+            <template slot="element">
+              <div class="icon-container">
+                <IconBase>
+                  <IconStepBackward></IconStepBackward>
+                </IconBase>
+              </div>
+            </template>
+            <template slot="content">이전 순서로 이동</template>
+          </TooltipContainer>
+          <TooltipContainer arrow="up center">
+            <template slot="element">
+              <div class="icon-container" @click="togglePlay">
+                <IconBase>
+                  <IconPause v-if="traversingQueue"></IconPause>
+                  <IconPlay v-else></IconPlay>
+                </IconBase>
+              </div>
+            </template>
+            <template slot="content">
+              {{ traversingQueue ? '재생' : '일시정지' }}
+            </template>
+          </TooltipContainer>
+          <TooltipContainer arrow="up center">
+            <template slot="element">
+              <div class="icon-container">
+                <IconBase>
+                  <IconStepForward></IconStepForward>
+                </IconBase>
+              </div>
+            </template>
+            <template slot="content">다음 순서로 이동</template>
+          </TooltipContainer>
+          <TooltipContainer arrow="up right">
+            <template slot="element">
+              <div class="icon-container">
+                <IconBase>
+                  <IconStepLast></IconStepLast>
+                </IconBase>
+              </div>
+            </template>
+            <template slot="content">마지막 순서로 이동</template>
+          </TooltipContainer>
+        </div>
       </div>
     </div>
   </section>
@@ -58,6 +115,12 @@ import BaseToggleSwitch from '@/components/common/BaseToggleSwitch.vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconConfirm from '@/components/icons/IconConfirm.vue'
 import IconRandom from '@/components/icons/IconRandom.vue'
+import IconPlay from '@/components/icons/IconPlay.vue'
+import IconPause from '@/components/icons/IconPause.vue'
+import IconStepFirst from '@/components/icons/IconStepFirst.vue'
+import IconStepLast from '@/components/icons/IconStepLast.vue'
+import IconStepBackward from '@/components/icons/IconStepBackward.vue'
+import IconStepForward from '@/components/icons/IconStepForward.vue'
 
 export default Vue.extend({
   components: {
@@ -67,6 +130,12 @@ export default Vue.extend({
     IconBase,
     IconConfirm,
     IconRandom,
+    IconPlay,
+    IconPause,
+    IconStepFirst,
+    IconStepLast,
+    IconStepBackward,
+    IconStepForward,
   },
   data() {
     return {
@@ -100,6 +169,9 @@ export default Vue.extend({
         this.structureValue.length > 0 &&
         this.structureValue !== this.inputValue.join()
       )
+    },
+    traversingQueue(): boolean {
+      return this.$store.state.traversingQueue
     },
   },
   mounted() {
@@ -158,6 +230,13 @@ export default Vue.extend({
 
       this.$store.commit('SET_MODIFIED_BY_TEXT', true)
       this.$store.commit('SET_STRUCTURE_VALUE', shuffled.join(','))
+    },
+    togglePlay() {
+      if (this.traversingQueue) {
+        this.$store.commit('STOP_TRAVERSING_QUEUE')
+      } else {
+        this.$store.commit('START_TRAVERSING_QUEUE')
+      }
     },
   },
 })
@@ -221,8 +300,14 @@ section {
     }
   }
 }
-.data-options {
+.node-controller {
   display: flex;
+  align-items: center;
   gap: 32px;
+
+  .player {
+    display: flex;
+    gap: 8px;
+  }
 }
 </style>

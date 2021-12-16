@@ -48,18 +48,26 @@ export default Vue.extend({
     modifiedByText(): boolean {
       return this.$store.state.modifiedByText
     },
+    traversingQueue(): boolean {
+      return this.$store.state.traversingQueue
+    },
+  },
+  mounted() {
+    this.$on('asdf', () => {
+      console.log('asdf recieved')
+    })
   },
   methods: {
     initQueue() {
-      this.pause()
+      this.pauseTraverse()
 
       this.queue = []
       this.currPointer = 0
       this.queue.push(['init'])
       this.values.forEach(value => this.queue.push(['insert', value]))
-      this.play()
+      this.startTraverse()
     },
-    play() {
+    startTraverse() {
       this.intervalId = setInterval(() => {
         const [action, value] = this.queue[this.currPointer]
 
@@ -110,11 +118,11 @@ export default Vue.extend({
         if (this.currPointer < this.queue.length - 1) {
           this.currPointer += 1
         } else {
-          this.pause()
+          this.pauseTraverse()
         }
       }, this.intervalSpeed)
     },
-    pause() {
+    pauseTraverse() {
       clearInterval(this.intervalId)
     },
     addNode(value: string, { source, target, index: linkIndex }: LinkObject) {
