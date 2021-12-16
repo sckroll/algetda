@@ -1,3 +1,6 @@
 <template>
-  <path d="M8 16L29 28L29 4L8 16ZM8 16V29H3V3H8V16Z" stroke-width="2" />
+  <path
+    d="M10.5547 14.8321L9 15.8685V14V3H5V29H9V18V16.1315L10.5547 17.1679L27 28.1315V3.86852L10.5547 14.8321Z"
+    stroke-width="2"
+  />
 </template>
