@@ -78,7 +78,7 @@
               </div>
             </template>
             <template slot="content">
-              {{ traversingQueue ? '재생' : '일시정지' }}
+              {{ traversingQueue ? '일시정지' : '재생' }}
             </template>
           </TooltipContainer>
           <TooltipContainer arrow="up center">
