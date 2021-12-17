@@ -40,6 +40,28 @@ export default Vue.extend({
         this.initQueue()
       }
     },
+    queueCommand(command: string) {
+      switch (command) {
+        case 'play':
+          if (this.currPointer === this.queue.length) {
+            this.initQueue()
+          } else {
+            this.startTraverse()
+          }
+          break
+        case 'pause':
+          this.pauseTraverse()
+          break
+        case 'stepFirst':
+          break
+        case 'stepBackward':
+          break
+        case 'stepForward':
+          break
+        case 'stepLast':
+          break
+      }
+    },
   },
   computed: {
     values(): string[] {
@@ -50,6 +72,9 @@ export default Vue.extend({
     },
     traversingQueue(): boolean {
       return this.$store.state.traversingQueue
+    },
+    queueCommand(): string {
+      return this.$store.state.queueCommand
     },
   },
   mounted() {
@@ -65,65 +90,72 @@ export default Vue.extend({
       this.currPointer = 0
       this.queue.push(['init'])
       this.values.forEach(value => this.queue.push(['insert', value]))
+
       this.startTraverse()
     },
     startTraverse() {
+      this.$store.commit('START_TRAVERSING_QUEUE')
       this.intervalId = setInterval(() => {
         const [action, value] = this.queue[this.currPointer]
 
         if (action === 'init') {
-          this.nodes = []
-          this.links = []
-          this.lastNodeId = 0
+          this.initNode()
         } else if (action === 'insert') {
-          const dx = 400
-          const maxLength = this.values.length
-
-          let fx, _cssClass
-          if (this.lastNodeId === 0) {
-            fx = dx
-            _cssClass = 'head'
-          } else {
-            fx =
-              ((window.innerWidth - dx * 2) / (maxLength - 1)) *
-                this.lastNodeId +
-              dx
-
-            if (this.lastNodeId === maxLength - 1) {
-              _cssClass = 'tail'
-            }
-          }
-
-          // 노드 추가
-          this.nodes.push({
-            id: this.lastNodeId,
-            name: value,
-            fx,
-            fy: window.innerHeight / 2,
-            pinned: true,
-            _cssClass,
-          })
-
-          // 간선 추가
-          if (this.lastNodeId > 0) {
-            this.links.push({
-              sid: this.lastNodeId - 1,
-              tid: this.lastNodeId,
-            })
-          }
-
-          this.lastNodeId += 1
+          this.insertNode(value)
         }
 
-        if (this.currPointer < this.queue.length - 1) {
-          this.currPointer += 1
-        } else {
+        this.currPointer += 1
+        if (this.currPointer === this.queue.length) {
           this.pauseTraverse()
         }
       }, this.intervalSpeed)
     },
     pauseTraverse() {
       clearInterval(this.intervalId)
+      this.$store.commit('STOP_TRAVERSING_QUEUE')
+    },
+    initNode() {
+      this.nodes = []
+      this.links = []
+      this.lastNodeId = 0
+    },
+    insertNode(value: string) {
+      const dx = 400
+      const maxLength = this.values.length
+
+      let fx, _cssClass
+      if (this.lastNodeId === 0) {
+        fx = dx
+        _cssClass = 'head'
+      } else {
+        fx =
+          ((window.innerWidth - dx * 2) / (maxLength - 1)) * this.lastNodeId +
+          dx
+
+        if (this.lastNodeId === maxLength - 1) {
+          _cssClass = 'tail'
+        }
+      }
+
+      // 노드 추가
+      this.nodes.push({
+        id: this.lastNodeId,
+        name: value,
+        fx,
+        fy: window.innerHeight / 2,
+        pinned: true,
+        _cssClass,
+      })
+
+      // 간선 추가
+      if (this.lastNodeId > 0) {
+        this.links.push({
+          sid: this.lastNodeId - 1,
+          tid: this.lastNodeId,
+        })
+      }
+
+      this.lastNodeId += 1
     },
     addNode(value: string, { source, target, index: linkIndex }: LinkObject) {
       // 1. 노드 추가

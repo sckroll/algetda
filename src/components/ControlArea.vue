@@ -50,7 +50,7 @@
         <div class="player">
           <TooltipContainer arrow="up center">
             <template slot="element">
-              <div class="icon-container">
+              <div class="icon-container" @click="stepFirst">
                 <IconBase>
                   <IconStepFirst></IconStepFirst>
                 </IconBase>
@@ -60,7 +60,7 @@
           </TooltipContainer>
           <TooltipContainer arrow="up center">
             <template slot="element">
-              <div class="icon-container">
+              <div class="icon-container" @click="stepBackward">
                 <IconBase>
                   <IconStepBackward></IconStepBackward>
                 </IconBase>
@@ -83,7 +83,7 @@
           </TooltipContainer>
           <TooltipContainer arrow="up center">
             <template slot="element">
-              <div class="icon-container">
+              <div class="icon-container" @click="stepForward">
                 <IconBase>
                   <IconStepForward></IconStepForward>
                 </IconBase>
@@ -93,7 +93,7 @@
           </TooltipContainer>
           <TooltipContainer arrow="up right">
             <template slot="element">
-              <div class="icon-container">
+              <div class="icon-container" @click="stepLast">
                 <IconBase>
                   <IconStepLast></IconStepLast>
                 </IconBase>
@@ -234,9 +234,23 @@ export default Vue.extend({
     togglePlay() {
       if (this.traversingQueue) {
         this.$store.commit('STOP_TRAVERSING_QUEUE')
+        this.$store.commit('SET_QUEUE_COMMAND', 'pause')
       } else {
         this.$store.commit('START_TRAVERSING_QUEUE')
+        this.$store.commit('SET_QUEUE_COMMAND', 'play')
       }
+    },
+    stepFirst() {
+      this.$store.commit('SET_QUEUE_COMMAND', 'stepFirst')
+    },
+    stepLast() {
+      this.$store.commit('SET_QUEUE_COMMAND', 'stepLast')
+    },
+    stepBackward() {
+      this.$store.commit('SET_QUEUE_COMMAND', 'stepBackward')
+    },
+    stepForward() {
+      this.$store.commit('SET_QUEUE_COMMAND', 'stepForward')
     },
   },
 })

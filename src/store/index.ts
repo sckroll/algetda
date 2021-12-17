@@ -11,6 +11,7 @@ export default new Vuex.Store({
     bidirectional: false,
     traversingQueue: false,
     structureValue: [] as string[],
+    queueCommand: '',
   },
   mutations: {
     OPEN_DRAWER(state) {
@@ -46,9 +47,14 @@ export default new Vuex.Store({
     },
     START_TRAVERSING_QUEUE(state) {
       state.traversingQueue = true
+      state.queueCommand = ''
     },
     STOP_TRAVERSING_QUEUE(state) {
       state.traversingQueue = false
+      state.queueCommand = ''
+    },
+    SET_QUEUE_COMMAND(state, command) {
+      state.queueCommand = command
     },
   },
   actions: {},
