@@ -78,9 +78,19 @@ export default Vue.extend({
       return this.$store.state.queueCommand
     },
     nodePositionX(): number {
-      const graphWidth = window.innerWidth - this.xPadding * 2
-      const nodeDistance = graphWidth / (this.values.length - 1)
-      return nodeDistance * this.lastNodeId + this.xPadding
+      if (this.values.length === 1) {
+        return window.innerWidth / 2
+      } else {
+        const graphWidth = window.innerWidth - this.xPadding * 2
+        const nodeDistance = graphWidth / (this.values.length - 1)
+        return nodeDistance * this.lastNodeId + this.xPadding
+      }
+    },
+    headNode(): NodeObject {
+      return this.nodes[0] as NodeObject
+    },
+    tailNode(): NodeObject {
+      return this.nodes[this.nodes.length - 1] as NodeObject
     },
   },
   methods: {
@@ -104,9 +114,9 @@ export default Vue.extend({
         } else if (action === 'insert') {
           this.insertNode(value)
         } else if (action === 'update') {
-          console.log('update')
+          this.updateNode(value)
         } else if (action === 'remove') {
-          console.log('remove')
+          this.removeNode(value)
         }
 
         this.currPointer += 1
@@ -125,24 +135,24 @@ export default Vue.extend({
       this.lastNodeId = 0
     },
     insertNode(value: string) {
-      let fx, _cssClass
+      let _cssClass
 
       if (this.lastNodeId === 0) {
-        fx = this.xPadding
         _cssClass = 'head'
       } else {
-        fx = this.nodePositionX
-
-        if (this.lastNodeId === this.values.length - 1) {
-          _cssClass = 'tail'
+        // 이전 꼬리 노드의 색상 변경
+        if (this.lastNodeId > 1) {
+          ;(this.tailNode as NewNode)._cssClass = ''
         }
+
+        _cssClass = 'tail'
       }
 
       // 노드 추가
       this.nodes.push({
         id: this.lastNodeId,
         name: value,
-        fx,
+        fx: this.nodePositionX,
         fy: window.innerHeight / 2,
         pinned: true,
         _cssClass,
@@ -157,6 +167,12 @@ export default Vue.extend({
       }
 
       this.lastNodeId += 1
+    },
+    updateNode(value: string) {
+      console.log('updateNode')
+    },
+    removeNode(value: string) {
+      console.log('removeNode')
     },
     addNodeByClick(
       value: string,
