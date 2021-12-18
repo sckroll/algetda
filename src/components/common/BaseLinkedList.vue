@@ -3,9 +3,9 @@
     directed
     :nodes="nodes"
     :links="links"
-    @node-add="addNode"
-    @node-change="changeNode"
-    @node-remove="removeNode"
+    @node-add="addNodeByClick"
+    @node-change="changeNodeByClick"
+    @node-remove="removeNodeByClick"
   ></BaseNetwork>
 </template>
 
@@ -27,6 +27,7 @@ export default Vue.extend({
       intervalSpeed: 100,
       intervalId: -1,
       currPointer: 0,
+      xPadding: 400,
     }
   },
   watch: {
@@ -76,11 +77,11 @@ export default Vue.extend({
     queueCommand(): string {
       return this.$store.state.queueCommand
     },
-  },
-  mounted() {
-    this.$on('asdf', () => {
-      console.log('asdf recieved')
-    })
+    nodePositionX(): number {
+      const graphWidth = window.innerWidth - this.xPadding * 2
+      const nodeDistance = graphWidth / (this.values.length - 1)
+      return nodeDistance * this.lastNodeId + this.xPadding
+    },
   },
   methods: {
     initQueue() {
@@ -102,6 +103,10 @@ export default Vue.extend({
           this.initNode()
         } else if (action === 'insert') {
           this.insertNode(value)
+        } else if (action === 'update') {
+          console.log('update')
+        } else if (action === 'remove') {
+          console.log('remove')
         }
 
         this.currPointer += 1
@@ -120,19 +125,15 @@ export default Vue.extend({
       this.lastNodeId = 0
     },
     insertNode(value: string) {
-      const dx = 400
-      const maxLength = this.values.length
-
       let fx, _cssClass
+
       if (this.lastNodeId === 0) {
-        fx = dx
+        fx = this.xPadding
         _cssClass = 'head'
       } else {
-        fx =
-          ((window.innerWidth - dx * 2) / (maxLength - 1)) * this.lastNodeId +
-          dx
+        fx = this.nodePositionX
 
-        if (this.lastNodeId === maxLength - 1) {
+        if (this.lastNodeId === this.values.length - 1) {
           _cssClass = 'tail'
         }
       }
@@ -157,7 +158,10 @@ export default Vue.extend({
 
       this.lastNodeId += 1
     },
-    addNode(value: string, { source, target, index: linkIndex }: LinkObject) {
+    addNodeByClick(
+      value: string,
+      { source, target, index: linkIndex }: LinkObject,
+    ) {
       // 1. 노드 추가
       const newNode = {
         id: ++this.lastNodeId,
@@ -166,7 +170,6 @@ export default Vue.extend({
         fy: (source.y + target.y) / 2,
         pinned: true,
       }
-
       this.nodes.splice(target.index, 0, newNode)
 
       // 2. 간선 추가
@@ -192,14 +195,14 @@ export default Vue.extend({
       this.$store.commit('SET_MODIFIED_BY_TEXT', false)
       this.$store.commit('SET_STRUCTURE_VALUE', added)
     },
-    changeNode(value: string, index: number) {
+    changeNodeByClick(value: string, index: number) {
       const changed = this.values.slice()
       changed[index] = value
 
       this.$store.commit('SET_MODIFIED_BY_TEXT', false)
       this.$store.commit('SET_STRUCTURE_VALUE', changed)
     },
-    removeNode(nodeIndex: number, nodeId: number) {
+    removeNodeByClick(nodeIndex: number, nodeId: number) {
       // 1. 노드의 진입 간선과 진출 간선을 검색
       const inLink = this.links.find(link => link.tid === nodeId)
       const outLink = this.links.find(link => link.sid === nodeId)
