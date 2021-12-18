@@ -9,32 +9,26 @@
         <div class="player">
           <TooltipContainer arrow="up center">
             <template slot="element">
-              <div class="icon-container" @click="stepFirst">
-                <IconBase>
-                  <IconStepFirst></IconStepFirst>
-                </IconBase>
-              </div>
+              <IconBase @click="stepFirst">
+                <IconStepFirst></IconStepFirst>
+              </IconBase>
             </template>
             <template slot="content">처음 순서로 이동</template>
           </TooltipContainer>
           <TooltipContainer arrow="up center">
             <template slot="element">
-              <div class="icon-container" @click="stepBackward">
-                <IconBase>
-                  <IconStepBackward></IconStepBackward>
-                </IconBase>
-              </div>
+              <IconBase @click="stepBackward">
+                <IconStepBackward></IconStepBackward>
+              </IconBase>
             </template>
             <template slot="content">이전 순서로 이동</template>
           </TooltipContainer>
           <TooltipContainer arrow="up center">
             <template slot="element">
-              <div class="icon-container" @click="togglePlay">
-                <IconBase>
-                  <IconPause v-if="traversingQueue"></IconPause>
-                  <IconPlay v-else></IconPlay>
-                </IconBase>
-              </div>
+              <IconBase @click="togglePlay">
+                <IconPause v-if="traversingQueue"></IconPause>
+                <IconPlay v-else></IconPlay>
+              </IconBase>
             </template>
             <template slot="content">
               {{ traversingQueue ? '일시정지' : '재생' }}
@@ -42,21 +36,17 @@
           </TooltipContainer>
           <TooltipContainer arrow="up center">
             <template slot="element">
-              <div class="icon-container" @click="stepForward">
-                <IconBase>
-                  <IconStepForward></IconStepForward>
-                </IconBase>
-              </div>
+              <IconBase @click="stepForward">
+                <IconStepForward></IconStepForward>
+              </IconBase>
             </template>
             <template slot="content">다음 순서로 이동</template>
           </TooltipContainer>
           <TooltipContainer arrow="up right">
             <template slot="element">
-              <div class="icon-container" @click="stepLast">
-                <IconBase>
-                  <IconStepLast></IconStepLast>
-                </IconBase>
-              </div>
+              <IconBase @click="stepLast">
+                <IconStepLast></IconStepLast>
+              </IconBase>
             </template>
             <template slot="content">마지막 순서로 이동</template>
           </TooltipContainer>
@@ -153,32 +143,6 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.icon-container {
-  height: 32px;
-
-  svg {
-    cursor: pointer;
-
-    &:hover {
-      * {
-        fill: black;
-      }
-    }
-  }
-  &.disabled {
-    svg {
-      cursor: default;
-    }
-    * {
-      stroke: $color-grey-2;
-    }
-    &:hover {
-      * {
-        fill: transparent;
-      }
-    }
-  }
 }
 .node-controller {
   display: flex;

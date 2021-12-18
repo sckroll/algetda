@@ -17,25 +17,17 @@
       </TooltipContainer>
       <TooltipContainer arrow="up center">
         <template slot="element">
-          <div
-            class="icon-container"
-            :class="{ disabled: !isModifiable }"
-            @click="handleConfirm"
-          >
-            <IconBase>
-              <IconConfirm></IconConfirm>
-            </IconBase>
-          </div>
+          <IconBase :disabled="!isModifiable" @click="handleConfirm">
+            <IconConfirm></IconConfirm>
+          </IconBase>
         </template>
         <template slot="content">입력한 값으로 초기화</template>
       </TooltipContainer>
       <TooltipContainer arrow="up center">
         <template slot="element">
-          <div class="icon-container" @click="shuffleNodes">
-            <IconBase>
-              <IconRandom></IconRandom>
-            </IconBase>
-          </div>
+          <IconBase @click="shuffleNodes">
+            <IconRandom></IconRandom>
+          </IconBase>
         </template>
         <template slot="content">랜덤 값으로 초기화</template>
       </TooltipContainer>
@@ -161,31 +153,5 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   gap: 8px;
-}
-.icon-container {
-  height: 32px;
-
-  svg {
-    cursor: pointer;
-
-    &:hover {
-      * {
-        fill: black;
-      }
-    }
-  }
-  &.disabled {
-    svg {
-      cursor: default;
-    }
-    * {
-      stroke: $color-grey-2;
-    }
-    &:hover {
-      * {
-        fill: transparent;
-      }
-    }
-  }
 }
 </style>

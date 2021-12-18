@@ -25,38 +25,21 @@
               short
               @enter="addNode"
             ></BaseInput>
-            <div
-              class="icon-container"
-              :class="{ disabled: newValue.length === 0 }"
-              @click="addNode"
-            >
-              <IconBase>
-                <IconAdd></IconAdd>
-              </IconBase>
-            </div>
+            <IconBase :disabled="newValue.length === 0" @click="addNode">
+              <IconAdd></IconAdd>
+            </IconBase>
           </template>
           <template v-else>
             <BaseInput v-model="newValue" short @enter="changeNode"></BaseInput>
-            <div
-              class="icon-container"
-              :class="{
-                disabled: newValue.length === 0 || newValue === prevValue,
-              }"
+            <IconBase
+              :disabled="newValue.length === 0 || newValue === prevValue"
               @click="changeNode"
             >
-              <IconBase>
-                <IconConfirm></IconConfirm>
-              </IconBase>
-            </div>
-            <div
-              class="icon-container"
-              :class="{ disabled: nodes.length < 2 }"
-              @click="removeNode"
-            >
-              <IconBase>
-                <IconRemove></IconRemove>
-              </IconBase>
-            </div>
+              <IconConfirm></IconConfirm>
+            </IconBase>
+            <IconBase :disabled="nodes.length < 2" @click="removeNode">
+              <IconRemove></IconRemove>
+            </IconBase>
           </template>
         </div>
         <div v-if="!isLink && currNode" class="info click-safe">
@@ -293,32 +276,6 @@ export default Vue.extend({
 .svg-container {
   width: 100%;
   height: 100%;
-}
-.icon-container {
-  height: 32px;
-
-  &.disabled {
-    svg {
-      cursor: default;
-    }
-    * {
-      stroke: $color-grey-2;
-    }
-    &:hover {
-      * {
-        fill: transparent;
-      }
-    }
-  }
-}
-svg {
-  cursor: pointer;
-
-  &:hover {
-    * {
-      fill: black;
-    }
-  }
 }
 .node-tooltip {
   display: flex;

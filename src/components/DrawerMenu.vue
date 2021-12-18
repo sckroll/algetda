@@ -3,11 +3,9 @@
     <section class="drawer-container">
       <div class="upper">
         <div class="close-button-container">
-          <div class="icon-container" @click="closeDrawer">
-            <IconBase>
-              <IconClose></IconClose>
-            </IconBase>
-          </div>
+          <IconBase @click="closeDrawer">
+            <IconClose></IconClose>
+          </IconBase>
         </div>
         <nav>
           <ul>
@@ -100,16 +98,6 @@ section.drawer-container {
 }
 .close-button-container {
   display: flex;
-}
-.icon-container {
-  cursor: pointer;
-  height: 32px;
-
-  &:hover {
-    path {
-      fill: black;
-    }
-  }
 }
 ul {
   display: flex;

@@ -1,42 +1,38 @@
 <template>
   <header class="header-bar" :class="{ landing }">
     <div class="left-side">
-      <div class="icon-container" @click="openDrawer">
-        <IconBase>
-          <IconDrawer></IconDrawer>
-        </IconBase>
-      </div>
+      <IconBase @click="openDrawer">
+        <IconDrawer></IconDrawer>
+      </IconBase>
       <Logo></Logo>
       <div class="curr-structure">{{ currStructure }}</div>
     </div>
     <div class="right-side">
       <TooltipContainer arrow="up center">
         <template slot="element">
-          <div class="icon-container" @click="openSettingsPopup">
-            <IconBase>
-              <IconSettings></IconSettings>
-            </IconBase>
-          </div>
+          <IconBase @click="openSettingsPopup">
+            <IconSettings></IconSettings>
+          </IconBase>
         </template>
         <template slot="content">설정</template>
       </TooltipContainer>
       <TooltipContainer arrow="up center">
         <template slot="element">
-          <a href="http://sckroll.github.io" class="icon-container">
-            <IconBase>
-              <IconHome></IconHome>
-            </IconBase>
-          </a>
+          <IconBase link="http://sckroll.github.io">
+            <IconHome></IconHome>
+          </IconBase>
         </template>
         <template slot="content">제작자 홈페이지</template>
       </TooltipContainer>
       <TooltipContainer arrow="up right">
         <template slot="element">
-          <a href="https://github.com/sckroll/algetda" class="icon-container">
-            <IconBase viewBox="0 0 496 512" color="black">
-              <IconGitHub></IconGitHub>
-            </IconBase>
-          </a>
+          <IconBase
+            viewBox="0 0 496 512"
+            color="black"
+            link="https://github.com/sckroll/algetda"
+          >
+            <IconGitHub></IconGitHub>
+          </IconBase>
         </template>
         <template slot="content">GitHub</template>
       </TooltipContainer>
@@ -110,18 +106,6 @@ header.header-bar {
 .curr-structure {
   font-size: 1.5em;
   font-weight: 300;
-}
-.icon-container {
-  height: 32px;
-}
-svg {
-  cursor: pointer;
-
-  &:hover {
-    path {
-      fill: black;
-    }
-  }
 }
 a {
   border-bottom: none;
