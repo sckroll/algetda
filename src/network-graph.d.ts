@@ -33,6 +33,7 @@ export interface NodeObject {
   fy: number
   vx: number
   vy: number
+  _cssClass: string
 }
 
 export interface LinkObject {
