@@ -6,6 +6,14 @@
     opacity: 1;
   }
 }
+@keyframes blink-stroke {
+  0% {
+    stroke-opacity: 1;
+  }
+  100% {
+    stroke-opacity: 0;
+  }
+}
 
 .node {
   fill: $color-primary;
@@ -33,6 +41,9 @@
     &:hover {
       fill: $color-tail-2;
     }
+  }
+  &.focus {
+    animation: fade-in 0.2s, blink-stroke 0.5s linear 0.2s infinite alternate;
   }
 }
 .link {

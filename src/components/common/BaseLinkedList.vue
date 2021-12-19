@@ -63,6 +63,16 @@ export default Vue.extend({
           break
       }
     },
+    lastNodeId(currId: number, prevId: number) {
+      if (prevId > 0) {
+        const newCssClass = this.nodes[prevId - 1]._cssClass?.replace(
+          'focus',
+          '',
+        )
+        this.nodes[prevId - 1]._cssClass = newCssClass
+      }
+      this.nodes[currId - 1]._cssClass += ' focus'
+    },
   },
   computed: {
     values(): string[] {
@@ -142,7 +152,8 @@ export default Vue.extend({
       } else {
         // 이전 꼬리 노드의 색상 변경
         if (this.lastNodeId > 1) {
-          ;(this.tailNode as NewNode)._cssClass = ''
+          const newCssClass = this.tailNode._cssClass.replace('tail', '')
+          this.tailNode._cssClass = newCssClass
         }
 
         _cssClass = 'tail'
@@ -168,12 +179,22 @@ export default Vue.extend({
 
       this.lastNodeId += 1
     },
+    // TODO: 순차 탐색(search) 메소드 구현, 큐에 삽입해서 시각화하는 로직 구현
+    // TODO: 노드 추가/수정/삭제 명령 수행 전에 인덱스가 주어지면
+    //       해당 인덱스를 찾을 때까지 순차 탐색 수행 후 명령 실행
+    //       그리고 그 과정을 모두 시각화
     updateNode(value: string) {
       console.log('updateNode')
     },
     removeNode(value: string) {
       console.log('removeNode')
     },
+    // searchByValue(value: string) {
+
+    // },
+    // searchByIndex(index: number) {
+
+    // },
     addNodeByClick(
       value: string,
       { source, target, index: linkIndex }: LinkObject,
