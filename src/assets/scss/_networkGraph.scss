@@ -43,7 +43,7 @@
     }
   }
   &.focus {
-    animation: fade-in 0.2s, blink-stroke 0.5s linear 0.2s infinite alternate;
+    animation: fade-in 0.2s, blink-stroke 0.5s linear infinite alternate;
   }
 }
 .link {
