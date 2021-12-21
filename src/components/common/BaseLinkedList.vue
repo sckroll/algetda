@@ -65,14 +65,16 @@ export default Vue.extend({
       }
     },
     currNodeId(currId: number, prevId: number) {
-      if (prevId > 0) {
+      if (prevId > 0 && prevId < this.nodes.length) {
         const newCssClass = this.nodes[prevId - 1]._cssClass?.replace(
           'focus',
           '',
         )
         this.nodes[prevId - 1]._cssClass = newCssClass
       }
-      this.nodes[currId - 1]._cssClass += ' focus'
+      if (this.nodes.length > 0) {
+        this.nodes[currId - 1]._cssClass += ' focus'
+      }
     },
   },
   computed: {
