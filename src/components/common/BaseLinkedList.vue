@@ -24,6 +24,7 @@ export default Vue.extend({
       links: [] as (NewLink | LinkObject)[],
       queue: [] as string[][],
       lastNodeId: 0,
+      currNodeId: 0,
       intervalSpeed: 100,
       intervalId: -1,
       currPointer: 0,
@@ -63,7 +64,7 @@ export default Vue.extend({
           break
       }
     },
-    lastNodeId(currId: number, prevId: number) {
+    currNodeId(currId: number, prevId: number) {
       if (prevId > 0) {
         const newCssClass = this.nodes[prevId - 1]._cssClass?.replace(
           'focus',
@@ -143,6 +144,7 @@ export default Vue.extend({
       this.nodes = []
       this.links = []
       this.lastNodeId = 0
+      this.currNodeId = 0
     },
     insertNode(value: string) {
       let _cssClass
@@ -178,6 +180,7 @@ export default Vue.extend({
       }
 
       this.lastNodeId += 1
+      this.currNodeId += 1
     },
     // TODO: 순차 탐색(search) 메소드 구현, 큐에 삽입해서 시각화하는 로직 구현
     // TODO: 노드 추가/수정/삭제 명령 수행 전에 인덱스가 주어지면
@@ -189,12 +192,12 @@ export default Vue.extend({
     removeNode(value: string) {
       console.log('removeNode')
     },
-    // searchByValue(value: string) {
-
-    // },
-    // searchByIndex(index: number) {
-
-    // },
+    searchByValue(value: string) {
+      this.currNodeId = 0
+    },
+    searchByIndex(index: number) {
+      this.currNodeId = 0
+    },
     addNodeByClick(
       value: string,
       { source, target, index: linkIndex }: LinkObject,
