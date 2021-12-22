@@ -12,6 +12,8 @@ export default new Vuex.Store({
     traversingQueue: false,
     structureValue: [] as string[],
     queueCommand: '',
+    targetValue: '',
+    targetIndex: -1,
   },
   mutations: {
     OPEN_DRAWER(state) {
@@ -53,8 +55,14 @@ export default new Vuex.Store({
       state.traversingQueue = false
       state.queueCommand = ''
     },
-    SET_QUEUE_COMMAND(state, command) {
+    SET_QUEUE_COMMAND(state, command: string) {
       state.queueCommand = command
+    },
+    SET_TARGET_VALUE(state, value: string) {
+      state.targetValue = value
+    },
+    SET_TARGET_INDEX(state, index: number) {
+      state.targetIndex = index
     },
   },
   actions: {},

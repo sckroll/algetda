@@ -2,6 +2,7 @@
   <section class="control-area">
     <div class="control-container">
       <NodeInitControl></NodeInitControl>
+      <NodeSearchControl></NodeSearchControl>
       <QueueTraversalControl></QueueTraversalControl>
     </div>
   </section>
@@ -10,11 +11,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import NodeInitControl from '@/components/NodeInitControl.vue'
+import NodeSearchControl from '@/components/NodeSearchControl.vue'
 import QueueTraversalControl from '@/components/QueueTraversalControl.vue'
 
 export default Vue.extend({
   components: {
     NodeInitControl,
+    NodeSearchControl,
     QueueTraversalControl,
   },
 })
