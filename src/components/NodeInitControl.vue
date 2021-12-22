@@ -1,6 +1,6 @@
 <template>
   <div class="node-init-control">
-    <div class="input-label">{{ structureLabel }} 값</div>
+    <div class="input-label">arr 값</div>
     <div class="input-content">
       <TooltipContainer
         arrow="up center"
@@ -68,9 +68,6 @@ export default Vue.extend({
     },
   },
   computed: {
-    structureLabel(): string {
-      return this.$route.name?.split(' - ')[1] ?? '자료 구조'
-    },
     inputValue(): string[] {
       return this.$store.state.structureValue
     },
