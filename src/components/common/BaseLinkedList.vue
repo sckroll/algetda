@@ -23,8 +23,8 @@ export default Vue.extend({
       nodes: [] as (NewNode | NodeObject)[],
       links: [] as (NewLink | LinkObject)[],
       queue: [] as string[][],
-      lastNodeId: 0,
-      currNodeId: 0,
+      lastNodeId: -1,
+      currNodeId: -1,
       intervalSpeed: 100,
       intervalId: -1,
       currPointer: 0,
@@ -65,16 +65,21 @@ export default Vue.extend({
       }
     },
     currNodeId(currId: number, prevId: number) {
-      if (prevId > 0 && prevId < this.nodes.length) {
-        const newCssClass = this.nodes[prevId - 1]._cssClass?.replace(
-          'focus',
-          '',
-        )
-        this.nodes[prevId - 1]._cssClass = newCssClass
+      if (this.nodes.length === 0) return
+
+      if (prevId >= 0) {
+        const newCssClass = this.nodes[prevId]._cssClass?.replace('focus', '')
+        this.nodes[prevId]._cssClass = newCssClass
       }
-      if (this.nodes.length > 0) {
-        this.nodes[currId - 1]._cssClass += ' focus'
+      if (currId >= 0) {
+        this.nodes[currId]._cssClass += ' focus'
       }
+    },
+    targetValue(value: string) {
+      this.searchByValue(value)
+    },
+    targetIndex(index: number) {
+      this.searchByIndex(index)
     },
   },
   computed: {
@@ -89,6 +94,12 @@ export default Vue.extend({
     },
     queueCommand(): string {
       return this.$store.state.queueCommand
+    },
+    targetValue(): string {
+      return this.$store.state.targetValue
+    },
+    targetIndex(): string {
+      return this.$store.state.targetIndex
     },
     nodePositionX(): number {
       if (this.values.length === 1) {
@@ -145,11 +156,14 @@ export default Vue.extend({
     initNode() {
       this.nodes = []
       this.links = []
-      this.lastNodeId = 0
-      this.currNodeId = 0
+      this.lastNodeId = -1
+      this.currNodeId = -1
     },
     insertNode(value: string) {
       let _cssClass
+
+      this.lastNodeId += 1
+      this.currNodeId += 1
 
       if (this.lastNodeId === 0) {
         _cssClass = 'head'
@@ -180,9 +194,6 @@ export default Vue.extend({
           tid: this.lastNodeId,
         })
       }
-
-      this.lastNodeId += 1
-      this.currNodeId += 1
     },
     // TODO: 순차 탐색(search) 메소드 구현, 큐에 삽입해서 시각화하는 로직 구현
     // TODO: 노드 추가/수정/삭제 명령 수행 전에 인덱스가 주어지면
@@ -196,9 +207,11 @@ export default Vue.extend({
     },
     searchByValue(value: string) {
       this.currNodeId = 0
+      console.log('search this:', value)
     },
     searchByIndex(index: number) {
       this.currNodeId = 0
+      console.log('search this:', index)
     },
     addNodeByClick(
       value: string,
