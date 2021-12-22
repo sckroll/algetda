@@ -25,7 +25,7 @@ export default Vue.extend({
       queue: [] as string[][],
       lastNodeId: -1,
       currNodeId: -1,
-      intervalSpeed: 100,
+      intervalSpeed: 300,
       intervalId: -1,
       currPointer: 0,
       xPadding: 400,
@@ -206,12 +206,40 @@ export default Vue.extend({
       console.log('removeNode')
     },
     searchByValue(value: string) {
+      console.log('search start: ', value)
+
       this.currNodeId = 0
-      console.log('search this:', value)
+      const searchIntervalId = setInterval(() => {
+        if ((this.nodes[this.currNodeId] as NodeObject).name === value) {
+          console.log('search success')
+
+          clearInterval(searchIntervalId)
+          return
+        }
+        if (this.currNodeId < this.nodes.length - 1) {
+          this.currNodeId += 1
+        } else {
+          console.log('search failure')
+
+          clearInterval(searchIntervalId)
+        }
+      }, this.intervalSpeed)
     },
     searchByIndex(index: number) {
+      console.log('search start: ', index)
+
       this.currNodeId = 0
-      console.log('search this:', index)
+      const searchIntervalId = setInterval(() => {
+        if ((this.nodes[this.currNodeId] as NodeObject).index === index) {
+          console.log('search success')
+
+          clearInterval(searchIntervalId)
+          return
+        }
+        if (this.currNodeId < this.nodes.length - 1) {
+          this.currNodeId += 1
+        }
+      }, this.intervalSpeed)
     },
     addNodeByClick(
       value: string,

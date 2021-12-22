@@ -77,6 +77,9 @@ export default Vue.extend({
       const korString = this.searchType === 'value' ? '값을' : '인덱스를'
       return this.errorMessage || `검색할 노드의 ${korString} 입력하세요.`
     },
+    maxLength(): number {
+      return this.$store.state.structureValue.length
+    },
   },
   mounted() {
     this.searchType = this.searchTypes[0].value
@@ -88,8 +91,8 @@ export default Vue.extend({
       if (this.searchType === 'value') {
         this.$store.commit('SET_TARGET_VALUE', this.targetValue)
       } else if (this.searchType === 'index') {
-        // 유효성 검사
-        this.checkValue()
+        // 인덱스 유효성 검사
+        this.checkIndex()
         if (this.errorMessage) return
 
         this.$store.commit('SET_TARGET_INDEX', parseInt(this.targetValue))
@@ -98,7 +101,7 @@ export default Vue.extend({
     changeType(type: string) {
       this.searchType = type
     },
-    checkValue() {
+    checkIndex() {
       const value = this.targetValue
 
       // 1. 공백 데이터를 입력했는가?
@@ -117,6 +120,12 @@ export default Vue.extend({
       const parsed = parseInt(this.targetValue)
       if (Number.isNaN(parsed) || parsed < 0) {
         this.errorMessage = '0 이상의 정수를 입력해주세요.'
+        return
+      }
+
+      // 4. 인덱스의 최대 범위를 벗어났는가?
+      if (parsed >= this.maxLength) {
+        this.errorMessage = '인덱스의 최대 범위를 넘어섰습니다.'
         return
       }
 
