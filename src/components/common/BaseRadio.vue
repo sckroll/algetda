@@ -7,6 +7,7 @@
         :id="'radio-' + item.value"
         :value="item.value"
         :checked="index === 0"
+        @change="handleChange"
       />
       <label :for="item.id">{{ item.label }}</label>
     </div>
@@ -29,6 +30,11 @@ export default Vue.extend({
     vertical: {
       type: Boolean,
       default: false,
+    },
+  },
+  methods: {
+    handleChange({ target }: Event) {
+      this.$emit('change', (target as HTMLInputElement).value)
     },
   },
 })
